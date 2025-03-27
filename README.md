@@ -6,9 +6,9 @@
 
 ## 🔧 사용 기술
 ### Backend
-- Java, Spring Boot, Spring Security, JPA, MySQL, JWT
+- 수정해야 함! 예시) Java, Spring Boot, Spring Security, JPA, MySQL, JWT
 ### Frontend
-- React, React Router, Zustand
+- 수정해야 함! 예시) React, React Router, Zustand
 ### 기타
 - Kakao Maps API, AWS EC2, RDS
 
@@ -25,8 +25,8 @@
 
 ## 🛠️ 개발 일정 및 진행 현황
 - [x] 프로젝트 기획
-- [ ] ERD 설계
-- [ ] API 명세서 작성
+- [ ] ERD 설계중...
+- [ ] API 명세서 작성중...
 - [ ] 기본 기능 개발 중...
 
 ## 🖼️ 화면 미리보기 (후에 추가 가능)
