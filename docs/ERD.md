@@ -20,9 +20,11 @@
 | id         | BIGINT (PK) | 사용자 고유 ID               |
 | username   | VARCHAR     | 로그인 ID                    |
 | password   | VARCHAR     | 비밀번호 (암호화)            |
-| nickname   | VARCHAR     | 닉네임                        |
+| nickname   | VARCHAR     | 닉네임                       |
 | role       | ENUM        | USER / BUSKER / ADMIN 등     |
-| created_at | DATETIME    | 가입일                        |
+| created_at | DATETIME    | 가입일                       |
+| is_deleted | BOOLEAN     | Soft Delete                  |
+| deleted_at | DATETIME    | 탈퇴일
 
 ---
 
