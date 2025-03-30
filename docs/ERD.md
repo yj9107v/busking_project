@@ -23,8 +23,9 @@
 | nickname   | VARCHAR     | 닉네임                       |
 | role       | ENUM        | USER / BUSKER / ADMIN 등     |
 | created_at | DATETIME    | 가입일                       |
+| updated_at | DATETIME    | 수정일                       |
 | is_deleted | BOOLEAN     | Soft Delete                  |
-| deleted_at | DATETIME    | 탈퇴일
+| deleted_at | DATETIME    | 탈퇴일                       |
 
 ---
 
@@ -39,7 +40,11 @@
 | date        | DATE         | 날짜                          |
 | start_time  | TIME         | 시작 시간                     |
 | end_time    | TIME         | 종료 시간                     |
+| description | VARCHAR(100) | 공연 소개 문구                |
 | status      | ENUM         | 예정 / 진행중 / 종료          |
+| created_at  | DATETIME     | 생성일                        |
+| updated_at  | DATETIME     | 수정일                        |
+| is_deleted | BOOLEAN       | Soft Delete                   |
 
 ---
 
@@ -64,7 +69,9 @@
 | title      | VARCHAR      | 제목                         |
 | content    | TEXT         | 내용                         |
 | media_url  | TEXT         | 사진/영상 URL                |
-| created_at | DATETIME     | 작성일                        |
+| created_at | DATETIME     | 작성일                       |
+| updated_at | DATETIME     | 수정일                        |
+| is_deleted | BOOLEAN      | Soft Delete                  |
 
 ---
 
@@ -77,7 +84,9 @@
 | user_id    | BIGINT (FK)  | 작성자 ID                        |
 | rating     | INT (1~5)    | 별점                             |
 | comment    | TEXT         | 리뷰 내용                        |
-| created_at | DATETIME     | 작성일                            |
+| created_at | DATETIME     | 작성일                           |
+| updated_at | DATETIME     | 수정일                           |
+| is_deleted | BOOLEAN      | Soft Delete                      |
 
 ---
 
@@ -90,7 +99,9 @@
 | user_id    | BIGINT (FK)  | 작성자 ID                    |
 | title      | VARCHAR      | 제목                         |
 | content    | TEXT         | 내용                         |
-| created_at | DATETIME     | 작성일                        |
+| created_at | DATETIME     | 작성일                       |
+| updated_at | DATETIME     | 수정일                       |
+| is_deleted | BOOLEAN     | Soft Delete                   |
 
 ---
 
