@@ -33,6 +33,7 @@
 | 필드명      | 타입         | 설명                          |
 |-------------|--------------|-------------------------------|
 | id          | BIGINT (PK)  | 일정 ID                       |
+| uuid        | CHAR(36)     | 외부 공개용 식별자            |
 | user_id     | BIGINT (FK)  | 버스커 ID (User.id)           |
 | location_id | BIGINT (FK)  | 장소 ID (Location.id)         |
 | date        | DATE         | 날짜                          |
@@ -58,6 +59,7 @@
 | 필드명     | 타입         | 설명                          |
 |------------|--------------|-------------------------------|
 | id         | BIGINT (PK)  | 게시글 ID                    |
+| uuid       | CHAR(36)     | 외부 공개용 식별자           |
 | user_id    | BIGINT (FK)  | 작성자 ID (User.id)          |
 | title      | VARCHAR      | 제목                         |
 | content    | TEXT         | 내용                         |
@@ -84,6 +86,7 @@
 | 필드명     | 타입         | 설명                          |
 |------------|--------------|-------------------------------|
 | id         | BIGINT (PK)  | 게시글 ID                    |
+| uuid       | CHAR(36)     | 외부 공개용 식별자           |
 | user_id    | BIGINT (FK)  | 작성자 ID                    |
 | title      | VARCHAR      | 제목                         |
 | content    | TEXT         | 내용                         |
