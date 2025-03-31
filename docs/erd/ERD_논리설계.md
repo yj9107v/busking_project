@@ -64,17 +64,17 @@
 
 ## 📌 PromotionPost (버스커 홍보 게시글)
 
-| 필드명     | 타입         | 설명                          |
-|------------|--------------|-------------------------------|
-| id         | BIGINT (PK)  | 게시글 ID                    |
-| uuid       | CHAR(36)     | 외부 공개용 식별자           |
-| user_id    | BIGINT (FK)  | 작성자 ID (User.id)          |
-| title      | VARCHAR      | 제목                         |
-| content    | TEXT         | 내용                         |
-| media_url  | TEXT         | 사진/영상 URL                |
-| created_at | DATETIME     | 작성일                       |
-| updated_at | DATETIME     | 수정일                        |
-| is_deleted | BOOLEAN      | Soft Delete                  |
+| 필드명     | 타입                      | 설명                          |
+|------------|---------------------------|-------------------------------|
+| id         | BIGINT (PK)               | 게시글 ID                    |
+| uuid       | CHAR(36) NOT NULL, UNIQUE | 외부 공개용 식별자           |
+| user_id    | BIGINT NOT NULL (FK)      | 작성자 ID (User.id)          |
+| title      | VARCHAR(100) NOT NULL     | 제목                         |
+| content    | TEXT NOT NULL             | 내용                         |
+| media_url  | TEXT                      | 사진/영상 URL                |
+| created_at | DATETIME NOT NULL         | 작성일                       |
+| updated_at | DATETIME                  | 수정일                        |
+| is_deleted | BOOLEAN DEFAULT FALSE     | Soft Delete                  |
 
 ---
 
