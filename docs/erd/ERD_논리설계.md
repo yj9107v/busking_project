@@ -74,7 +74,7 @@
 | title      | VARCHAR(100) NOT NULL     | 제목                         |
 | content    | TEXT NOT NULL             | 내용                         |
 | media_url  | TEXT                      | 사진/영상 URL                |
-| view_count | INT DEFAULT 0             | 게시글 조회 수 |
+| view_count | INT DEFAULT 0             | 게시글 조회 수               |
 | created_at | DATETIME NOT NULL         | 작성일                       |
 | updated_at | DATETIME                  | 수정일                        |
 | is_deleted | BOOLEAN DEFAULT FALSE     | Soft Delete                  |
@@ -94,7 +94,7 @@
 | updated_at | DATETIME                          | 수정일                                     | 
 | is_deleted | BOOLEAN DEFAULT FALSE             | Soft Delete                   |
 
->💡 제약조건: UNIQUE(post_id, post_type, user_id) | 하나의 게시글에 한 유저당 리뷰 하나만 작성 가능
+>💡 제약조건: UNIQUE(post_id, post_type, user_id) | 하나의 게시글에 한 유저당 리뷰 하나만 작성 가능.
 
 ---
 
@@ -139,7 +139,7 @@
 | user_id    | BIGINT NOT NULL             | 조회한 사용자 ID (FK)          |
 | viewed_at  | DATETIME                    | 조회 시간                      |
 
->💡 제약조건: UNIQUE(post_id, post_type, user_id)
+>💡 제약조건: UNIQUE(post_id, post_type, user_id) | 동일 사용자는 한 게시글에 대해 단 1회만 조회 수가 증가한다.
 
 ---
 
