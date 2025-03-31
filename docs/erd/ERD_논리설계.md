@@ -18,16 +18,16 @@
 ## 📌 User (회원)
 
 | 필드명     | 타입        | 설명                         |
-|------------|-------------|------------------------------|
-| id         | BIGINT (PK) | 사용자 고유 ID               |
-| username   | VARCHAR     | 로그인 ID                    |
-| password   | VARCHAR     | 비밀번호 (암호화)            |
-| nickname   | VARCHAR     | 닉네임                       |
+|------------|----------------------|------------------------------|
+| id         | BIGINT (PK)          | 사용자 고유 ID               |
+| username   | VARCHAR(20) NOT NULL     | 로그인 ID                    |
+| password   | VARCHAR(255) NOT NULL     | 비밀번호 (암호화)            |
+| nickname   | VARCHAR(10) NOT NULL     | 닉네임                       |
 | role       | ENUM('USER', 'BUSKER', 'ADMIN') | USER / BUSKER / ADMIN 등     |
 | created_at | DATETIME NOT NULL    | 가입일                       |
-| updated_at | DATETIME    | 수정일                       |
-| is_deleted | BOOLEAN DEFAULT FALSE    | Soft Delete                  |
-| deleted_at | DATETIME    | 탈퇴일                       |
+| updated_at | DATETIME             | 수정일                       |
+| is_deleted | BOOLEAN DEFAULT FALSE | Soft Delete                  |
+| deleted_at | DATETIME             | 탈퇴일                       |
 
 ---
 
@@ -60,7 +60,7 @@
 | longitude| DOUBLE       | 경도                          |
 | region   | VARCHAR(50) or ENUM | 지역명 (ex. 서울)          |
 | description | TEXT        | 장소 설명                   |
-| is_active | Boolean     | 장소 사용 여부 (기본 True)    |
+| is_active | Boolean DEFAULT TRUE     | 장소 사용 여부 (기본 True)    |
 
 ---
 
@@ -88,13 +88,13 @@
 | id         | BIGINT (PK)                       | 리뷰 ID                                    |
 | post_id    | BIGINT NOT NULL (FK)              | 대상 게시글 ID (PromotionPost.id) |
 | user_id    | BIGINT NOT NULL (FK)              | 작성자 ID                         |
-| rating     | INT CHECK (rating 1 BETWEEN 5)    | 별점                  |
+| rating     | INT CHECK (rating BETWEEN 1 AND 5)    | 별점                  |
 | comment    | TEXT                              | 리뷰 내용                                  |
 | created_at | DATETIME NOT NULL                 | 작성일                            |
 | updated_at | DATETIME                          | 수정일                                     | 
 | is_deleted | BOOLEAN DEFAULT FALSE             | Soft Delete                   |
 
->💡 제약조건: UNIQUE(post_id, post_type, user_id) | 하나의 게시글에 한 유저당 리뷰 하나만 작성 가능.
+>💡 제약조건: UNIQUE(post_id, user_id) | 하나의 게시글에 한 유저당 리뷰 하나만 작성 가능.
 
 ---
 
@@ -125,7 +125,7 @@
 | created_at | DATETIME NOT NULL              | 작성일                               |
 | updated_at | DATETIME                       | 수정일                               |
 | is_deleted | BOOLEAN DEFAULT FALSE          | Soft Delete                          |
-| parent_id  | BIGINT (자기 참조, NULL 허용) | 대댓글인 경우 부모 댓글 ID (선택)   |
+| parent_id  | BIGINT (FK - Comment.id, NULL 허용) | 부모 댓글 ID (대  댓글용)   |
 
 ---
 
