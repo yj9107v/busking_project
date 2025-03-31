@@ -53,10 +53,10 @@
 | 필드명   | 타입         | 설명                          |
 |----------|--------------|-------------------------------|
 | id       | BIGINT (PK)  | 장소 ID                       |
-| name     | VARCHAR      | 장소 이름 (예: 홍대 걷고 싶은 거리) |
+| name     | VARCHAR(100) | 장소 이름 (예: 홍대 걷고 싶은 거리) |
 | latitude | DOUBLE       | 위도                          |
 | longitude| DOUBLE       | 경도                          |
-| region   | VARCHAR or ENUM | 지역명 (ex. 서울)          |
+| region   | VARCHAR(50) or ENUM | 지역명 (ex. 서울)          |
 | description | TEXT        | 장소 설명                   |
 | is_active | Boolean     | 장소 사용 여부 (기본 True)    |
 
