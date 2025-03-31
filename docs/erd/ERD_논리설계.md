@@ -24,7 +24,7 @@
 | role       | ENUM        | USER / BUSKER / ADMIN 등     |
 | created_at | DATETIME    | 가입일                       |
 | updated_at | DATETIME    | 수정일                       |
-| is_deleted | BOOLEAN     | Soft Delete                  |
+| is_deleted | BOOLEAN DEFAULT FALSE    | Soft Delete                  |
 | deleted_at | DATETIME    | 탈퇴일                       |
 
 ---
@@ -34,9 +34,9 @@
 | 필드명      | 타입         | 설명                          |
 |-------------|--------------|-------------------------------|
 | id          | BIGINT (PK)  | 일정 ID                       |
-| uuid        | CHAR(36)     | 외부 공개용 식별자            |
-| user_id     | BIGINT (FK)  | 버스커 ID (User.id)           |
-| location_id | BIGINT (FK)  | 장소 ID (Location.id)         |
+| uuid        | CHAR(36) NOT NULL, UNIQUE | 외부 공개용 식별자            |
+| user_id     | BIGINT NOT NULL (FK)  | 버스커 ID (User.id)           |
+| location_id | BIGINT NOT NULL (FK)  | 장소 ID (Location.id)         |
 | date        | DATE         | 날짜                          |
 | start_time  | TIME         | 시작 시간                     |
 | end_time    | TIME         | 종료 시간                     |
@@ -44,7 +44,7 @@
 | status      | ENUM         | 예정 / 진행중 / 종료          |
 | created_at  | DATETIME     | 생성일                        |
 | updated_at  | DATETIME     | 수정일                        |
-| is_deleted | BOOLEAN       | Soft Delete                   |
+| is_deleted | BOOLEAN DEFAULT FALSE      | Soft Delete                   |
 
 ---
 
@@ -83,13 +83,13 @@
 | 필드명     | 타입         | 설명                             |
 |------------|--------------|----------------------------------|
 | id         | BIGINT (PK)  | 리뷰 ID                          |
-| post_id    | BIGINT (FK)  | 대상 게시글 ID (PromotionPost.id) |
-| user_id    | BIGINT (FK)  | 작성자 ID                        |
-| rating     | INT (1~5)    | 별점                             |
+| post_id    | BIGINT NOT NULL, UNIQUE (FK)  | 대상 게시글 ID (PromotionPost.id) |
+| user_id    | BIGINT NULL, UNIQUE (FK)  | 작성자 ID                        |
+| rating     | INT CHECK (1~5)    | 별점                             |
 | comment    | TEXT         | 리뷰 내용                        |
 | created_at | DATETIME     | 작성일                           |
 | updated_at | DATETIME     | 수정일                           |
-| is_deleted | BOOLEAN      | Soft Delete                      |
+| is_deleted | BOOLEAN DEFAULT FALSE     | Soft Delete                      |
 
 ---
 
@@ -98,13 +98,13 @@
 | 필드명     | 타입         | 설명                          |
 |------------|--------------|-------------------------------|
 | id         | BIGINT (PK)  | 게시글 ID                    |
-| uuid       | CHAR(36)     | 외부 공개용 식별자           |
-| user_id    | BIGINT (FK)  | 작성자 ID                    |
-| title      | VARCHAR      | 제목                         |
-| content    | TEXT         | 내용                         |
+| uuid       | CHAR(36) NOT NULL, UNIQUE    | 외부 공개용 식별자           |
+| user_id    | BIGINT NOT NULL (FK)  | 작성자 ID                    |
+| title      | VARCHAR(100) NOT NULL      | 제목                         |
+| content    | TEXT NOT NULL        | 내용                         |
 | created_at | DATETIME     | 작성일                       |
 | updated_at | DATETIME     | 수정일                       |
-| is_deleted | BOOLEAN     | Soft Delete                   |
+| is_deleted | BOOLEAN DEFAULT FALSE    | Soft Delete                   |
 
 ---
 
