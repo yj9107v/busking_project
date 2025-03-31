@@ -9,6 +9,7 @@
 | Review         | 홍보 게시글에 남기는 리뷰                 |
 | BoardPost      | 자유 게시판 글                          |
 | Comment        | 자유 게시판 댓글                      |
+| PostView       | 게시글 조회 기록                      |
 
 ---
 
@@ -73,6 +74,7 @@
 | title      | VARCHAR(100) NOT NULL     | 제목                         |
 | content    | TEXT NOT NULL             | 내용                         |
 | media_url  | TEXT                      | 사진/영상 URL                |
+| view_count | INT DEFAULT 0             | 게시글 조회 수 |
 | created_at | DATETIME NOT NULL         | 작성일                       |
 | updated_at | DATETIME                  | 수정일                        |
 | is_deleted | BOOLEAN DEFAULT FALSE     | Soft Delete                  |
@@ -81,32 +83,34 @@
 
 ## 📌 Review (홍보 게시글 리뷰)
 
-| 필드명     | 타입         | 설명                             |
-|------------|--------------|----------------------------------|
-| id         | BIGINT (PK)  | 리뷰 ID                          |
-| post_id    | BIGINT NOT NULL (FK)  | 대상 게시글 ID (PromotionPost.id) |
-| user_id    | BIGINT NOT NULL (FK)  | 작성자 ID                        |
-| 👉제약조건  | UNIQUE(post_id, user_id) | 하나의 게시글에 한 유저당 리뷰 하나만 작성 가능 |
-| rating     | INT CHECK (rating 1 BETWEEN 5)    | 별점                             |
-| comment    | TEXT         | 리뷰 내용                        |
-| created_at | DATETIME NOT NULL     | 작성일                           |
-| updated_at | DATETIME     | 수정일                           |
-| is_deleted | BOOLEAN DEFAULT FALSE     | Soft Delete                      |
+| 필드명     | 타입                             | 설명                                       |
+|------------|-----------------------------------|--------------------------------------------|
+| id         | BIGINT (PK)                       | 리뷰 ID                                    |
+| post_id    | BIGINT NOT NULL (FK)              | 대상 게시글 ID (PromotionPost.id) |
+| user_id    | BIGINT NOT NULL (FK)              | 작성자 ID                         |
+| rating     | INT CHECK (rating 1 BETWEEN 5)    | 별점                  |
+| comment    | TEXT                              | 리뷰 내용                                  |
+| created_at | DATETIME NOT NULL                 | 작성일                            |
+| updated_at | DATETIME                          | 수정일                                     | 
+| is_deleted | BOOLEAN DEFAULT FALSE             | Soft Delete                   |
+
+>💡 제약조건: UNIQUE(post_id, post_type, user_id) | 하나의 게시글에 한 유저당 리뷰 하나만 작성 가능
 
 ---
 
 ## 📌 BoardPost (자유 게시판)
 
-| 필드명     | 타입         | 설명                          |
-|------------|--------------|-------------------------------|
-| id         | BIGINT (PK)  | 게시글 ID                    |
+| 필드명     | 타입                         | 설명                          |
+|------------|------------------------------|-------------------------------|
+| id         | BIGINT (PK)                  | 게시글 ID                    |
 | uuid       | CHAR(36) NOT NULL, UNIQUE    | 외부 공개용 식별자           |
-| user_id    | BIGINT NOT NULL (FK)  | 작성자 ID                    |
-| title      | VARCHAR(100) NOT NULL      | 제목                         |
-| content    | TEXT NOT NULL        | 내용                         |
-| created_at | DATETIME NOT NULL     | 작성일                       |
-| updated_at | DATETIME     | 수정일                       |
-| is_deleted | BOOLEAN DEFAULT FALSE    | Soft Delete                   |
+| user_id    | BIGINT NOT NULL (FK)         | 작성자 ID                    |
+| title      | VARCHAR(100) NOT NULL        | 제목                         |
+| content    | TEXT NOT NULL                | 내용                         |
+| view_count | INT DEFAULT 0                | 게시글 조회 수               |
+| created_at | DATETIME NOT NULL            | 작성일                       |
+| updated_at | DATETIME                     | 수정일                       |
+| is_deleted | BOOLEAN DEFAULT FALSE        | Soft Delete                   |
 
 ---
 
@@ -122,6 +126,20 @@
 | updated_at | DATETIME                       | 수정일                               |
 | is_deleted | BOOLEAN DEFAULT FALSE          | Soft Delete                          |
 | parent_id  | BIGINT (자기 참조, NULL 허용) | 대댓글인 경우 부모 댓글 ID (선택)   |
+
+---
+
+## 📌 PostView (게시글 조회 기록)
+
+| 필드명     | 타입                        | 설명                            |
+|------------|-----------------------------|---------------------------------|
+| id         | BIGINT (PK)                 | 고유 ID                         |
+| post_id    | BIGINT NOT NULL             | 게시글 ID (FK - 홍보 or 자유)  |
+| post_type  | ENUM('PROMOTION', 'BOARD')  | 게시판 종류 구분               |
+| user_id    | BIGINT NOT NULL             | 조회한 사용자 ID (FK)          |
+| viewed_at  | DATETIME                    | 조회 시간                      |
+
+>💡 제약조건: UNIQUE(post_id, post_type, user_id)
 
 ---
 
