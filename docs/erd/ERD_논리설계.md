@@ -8,6 +8,7 @@
 | PromotionPost  | 버스커의 자기 홍보 게시물                 |
 | Review         | 홍보 게시글에 남기는 리뷰                 |
 | BoardPost      | 자유 게시판 글                          |
+| Comment        | 자유 게시판 댓글                      |
 
 ---
 
@@ -108,10 +109,27 @@
 
 ---
 
+## 📌 Comment (자유 게시판 댓글)
+
+| 필드명     | 타입                           | 설명                                |
+|------------|--------------------------------|-------------------------------------|
+| id         | BIGINT (PK)                    | 댓글 ID                             |
+| post_id    | BIGINT NOT NULL (FK)           | 대상 게시글 ID (BoardPost.id)      |
+| user_id    | BIGINT NOT NULL (FK)           | 작성자 ID (User.id)                 |
+| content    | TEXT NOT NULL                  | 댓글 내용                            |
+| created_at | DATETIME NOT NULL              | 작성일                               |
+| updated_at | DATETIME                       | 수정일                               |
+| is_deleted | BOOLEAN DEFAULT FALSE          | Soft Delete                          |
+| parent_id  | BIGINT (자기 참조, NULL 허용) | 대댓글인 경우 부모 댓글 ID (선택)   |
+
+---
+
 ## 🔄 관계 정리
 
 - User (1) ↔ (N) Busking  
 - User (1) ↔ (N) PromotionPost  
-- User (1) ↔ (N) Review  
+- User (1) ↔ (N) Review
+- User (1) ↔ (N) Comment
 - PromotionPost (1) ↔ (N) Review  
 - Busking (N) ↔ (1) Location
+- BoardPost (N) ↔ (1) Comment 
