@@ -12,7 +12,7 @@
 
 ---
 
-# ✅ 2. 기본 ERD 설계 초안
+# ✅ 2. 논리적 ERD 설계
 
 ## 📌 User (회원)
 
@@ -22,8 +22,8 @@
 | username   | VARCHAR     | 로그인 ID                    |
 | password   | VARCHAR     | 비밀번호 (암호화)            |
 | nickname   | VARCHAR     | 닉네임                       |
-| role       | ENUM        | USER / BUSKER / ADMIN 등     |
-| created_at | DATETIME    | 가입일                       |
+| role       | ENUM('USER', 'BUSKER', 'ADMIN') | USER / BUSKER / ADMIN 등     |
+| created_at | DATETIME NOT NULL    | 가입일                       |
 | updated_at | DATETIME    | 수정일                       |
 | is_deleted | BOOLEAN DEFAULT FALSE    | Soft Delete                  |
 | deleted_at | DATETIME    | 탈퇴일                       |
@@ -42,8 +42,8 @@
 | start_time  | TIME         | 시작 시간                     |
 | end_time    | TIME         | 종료 시간                     |
 | description | VARCHAR(100) | 공연 소개 문구                |
-| status      | ENUM         | 예정 / 진행중 / 종료          |
-| created_at  | DATETIME     | 생성일                        |
+| status      | ENUM('예정', '진행중', '종료') | 예정 / 진행중 / 종료          |
+| created_at  | DATETIME NOT NULL     | 생성일                        |
 | updated_at  | DATETIME     | 수정일                        |
 | is_deleted | BOOLEAN DEFAULT FALSE      | Soft Delete                   |
 
@@ -84,11 +84,12 @@
 | 필드명     | 타입         | 설명                             |
 |------------|--------------|----------------------------------|
 | id         | BIGINT (PK)  | 리뷰 ID                          |
-| post_id    | BIGINT NOT NULL, UNIQUE (FK)  | 대상 게시글 ID (PromotionPost.id) |
-| user_id    | BIGINT NULL, UNIQUE (FK)  | 작성자 ID                        |
-| rating     | INT CHECK (1~5)    | 별점                             |
+| post_id    | BIGINT NOT NULL (FK)  | 대상 게시글 ID (PromotionPost.id) |
+| user_id    | BIGINT NOT NULL (FK)  | 작성자 ID                        |
+| 👉제약조건  | UNIQUE(post_id, user_id) | 하나의 게시글에 한 유저당 리뷰 하나만 작성 가능 |
+| rating     | INT CHECK (rating 1 BETWEEN 5)    | 별점                             |
 | comment    | TEXT         | 리뷰 내용                        |
-| created_at | DATETIME     | 작성일                           |
+| created_at | DATETIME NOT NULL     | 작성일                           |
 | updated_at | DATETIME     | 수정일                           |
 | is_deleted | BOOLEAN DEFAULT FALSE     | Soft Delete                      |
 
@@ -103,7 +104,7 @@
 | user_id    | BIGINT NOT NULL (FK)  | 작성자 ID                    |
 | title      | VARCHAR(100) NOT NULL      | 제목                         |
 | content    | TEXT NOT NULL        | 내용                         |
-| created_at | DATETIME     | 작성일                       |
+| created_at | DATETIME NOT NULL     | 작성일                       |
 | updated_at | DATETIME     | 수정일                       |
 | is_deleted | BOOLEAN DEFAULT FALSE    | Soft Delete                   |
 
@@ -132,4 +133,4 @@
 - User (1) ↔ (N) Comment
 - PromotionPost (1) ↔ (N) Review  
 - Busking (N) ↔ (1) Location
-- BoardPost (N) ↔ (1) Comment 
+- BoardPost (1) ↔ (N) Comment 
