@@ -23,7 +23,7 @@
 | username   | VARCHAR(20) NOT NULL     | 로그인 ID                    |
 | password   | VARCHAR(255) NOT NULL     | 비밀번호 (암호화)            |
 | nickname   | VARCHAR(10) NOT NULL     | 닉네임                       |
-| role       | ENUM('USER', 'BUSKER', 'ADMIN') | USER / BUSKER / ADMIN 등     |
+| role       | ENUM('USER', 'BUSKER', 'ADMIN') NOT NULL | USER / BUSKER / ADMIN 등     |
 | created_at | DATETIME NOT NULL    | 가입일                       |
 | updated_at | DATETIME             | 수정일                       |
 | is_deleted | BOOLEAN DEFAULT FALSE | Soft Delete                  |
@@ -55,12 +55,12 @@
 | 필드명   | 타입         | 설명                          |
 |----------|--------------|-------------------------------|
 | id       | BIGINT (PK)  | 장소 ID                       |
-| name     | VARCHAR(100) | 장소 이름 (예: 홍대 걷고 싶은 거리) |
+| name     | VARCHAR(100) NOT NULL | 장소 이름 (예: 홍대 걷고 싶은 거리) |
 | latitude | DOUBLE       | 위도                          |
 | longitude| DOUBLE       | 경도                          |
-| region   | VARCHAR(50) or ENUM | 지역명 (ex. 서울)          |
+| region   | VARCHAR(50) NOT NULL or ENUM NOT NULL | 지역명 (ex. 서울)          |
 | description | TEXT        | 장소 설명                   |
-| is_active | Boolean DEFAULT TRUE     | 장소 사용 여부 (기본 True)    |
+| is_active | BOOLEAN DEFAULT TRUE     | 장소 사용 여부 (기본 True)    |
 
 ---
 
@@ -137,7 +137,7 @@
 | post_id    | BIGINT NOT NULL             | 게시글 ID (FK - 홍보 or 자유)  |
 | post_type  | ENUM('PROMOTION', 'BOARD')  | 게시판 종류 구분               |
 | user_id    | BIGINT NOT NULL             | 조회한 사용자 ID (FK)          |
-| viewed_at  | DATETIME                    | 조회 시간                      |
+| viewed_at  | DATETIME NOT NULL           | 조회 시간                      |
 
 >💡 제약조건: UNIQUE(post_id, post_type, user_id) | 동일 사용자는 한 게시글에 대해 단 1회만 조회 수가 증가한다.
 
