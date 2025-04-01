@@ -135,7 +135,7 @@
 |------------|-----------------------------|---------------------------------|
 | id         | BIGINT (PK)                 | 고유 ID                         |
 | post_id    | BIGINT NOT NULL             | 게시글 ID (FK - 홍보 or 자유)  |
-| post_type  | ENUM('PROMOTION', 'BOARD')  | 게시판 종류 구분               |
+| post_type  | ENUM('PROMOTION', 'BOARD') NOT NULL | 게시판 종류 구분               |
 | user_id    | BIGINT NOT NULL             | 조회한 사용자 ID (FK)          |
 | viewed_at  | DATETIME NOT NULL           | 조회 시간                      |
 
