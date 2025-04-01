@@ -47,6 +47,6 @@
 > 개발 후 React UI 캡처 넣기
 
 ## 📄 문서
-- [ERD 설계](docs/erd/ERD_논리설계.md)
+- [ERD 설계](docs/erd/)
 - [API 명세서](docs/API.md)
 - [기능 목록 및 유즈케이스](docs/Feature_List.md)
