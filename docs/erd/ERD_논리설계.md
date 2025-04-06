@@ -28,7 +28,7 @@
 | updated_at | DATETIME             | 수정일                       |
 | is_deleted | BOOLEAN DEFAULT FALSE | Soft Delete                  |
 | deleted_at | DATETIME             | 탈퇴일                       |
-
+>💡 ENUM 타입은 프론트에서 한글로 매핑!
 ---
 
 ## 📌 Busking (버스킹 일정)
@@ -43,7 +43,7 @@
 | start_time  | TIME         | 시작 시간                     |
 | end_time    | TIME         | 종료 시간                     |
 | description | VARCHAR(100) | 공연 소개 문구                |
-| status      | ENUM('예정', '진행중', '종료') | 예정 / 진행중 / 종료          |
+| status      | ENUM('SCHEDULED', 'ONGOING', 'COMPLETED') | 예정 / 진행중 / 종료          |
 | created_at  | DATETIME NOT NULL     | 생성일                        |
 | updated_at  | DATETIME     | 수정일                        |
 | is_deleted | BOOLEAN DEFAULT FALSE      | Soft Delete                   |
@@ -78,6 +78,7 @@
 | created_at | DATETIME NOT NULL         | 작성일                       |
 | updated_at | DATETIME                  | 수정일                        |
 | is_deleted | BOOLEAN DEFAULT FALSE     | Soft Delete                  |
+| category   | ENUM('ART', 'DANCE', 'MUSIC', 'TALK') NOT NULL | 게시글 분류(예술, 댄스, 음악, 토크) | 
 
 ---
 
