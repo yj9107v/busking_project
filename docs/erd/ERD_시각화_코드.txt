@@ -19,7 +19,7 @@ Table Busking {
   start_time time
   end_time time
   description varchar(100)
-  status eunm(예정, 진행중, 종료) [not null]
+  status eunm((SCHEDULED, ONGOING, COMPLETED) [not null]
   created_at datetime [not null]
   updated_at datetime
   is_deleted boolean [default: false]
@@ -46,6 +46,7 @@ Table PromotionPost {
   created_at datetime [not null]
   updated_at datetime
   is_deleted boolean [default: false]
+  category enum(ART, DANCE, MUSIC, TALK) [not null]
 }
 
 Table Review {
