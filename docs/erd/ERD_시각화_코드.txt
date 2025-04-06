@@ -19,7 +19,7 @@ Table Busking {
   start_time time
   end_time time
   description varchar(100)
-  status eunm((SCHEDULED, ONGOING, COMPLETED) [not null]
+  status enum(SCHEDULED, ONGOING, COMPLETED) [not null]
   created_at datetime [not null]
   updated_at datetime
   is_deleted boolean [default: false]
