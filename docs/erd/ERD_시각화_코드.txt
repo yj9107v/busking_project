@@ -1,13 +1,18 @@
 Table User {
   id bigint [pk]
-  username varchar(20) [not null]
-  password varchar(255) [not null]
-  nickname varchar(10) [not null]
+  username varchar(20) [unique]
+  password varchar(255)
+  nickname varchar(10) [unique]
+  email varcahr(50) [unique]
+  social_provider varchar(20) [not null]
+  social_id varchar(50)
   role enum(USER, BUSKER, ADMIN) [not null]
   created_at datetime [not null]
   updated_at datetime
   is_deleted boolean [default: false]
   deleted_at datetime
+
+  note: 'unique(social_provider, social_id)'
 }
 
 Table Busking {
