@@ -20,15 +20,20 @@
 | 필드명     | 타입        | 설명                         |
 |------------|----------------------|------------------------------|
 | id         | BIGINT (PK)          | 사용자 고유 ID               |
-| username   | VARCHAR(20) NOT NULL     | 로그인 ID                    |
-| password   | VARCHAR(255) NOT NULL     | 비밀번호 (암호화)            |
-| nickname   | VARCHAR(10) NOT NULL     | 닉네임                       |
+| username   | VARCHAR(20) UNIQUE     | 로그인 ID (중복 불가)         |
+| password   | VARCHAR(255)      | 비밀번호 (암호화)            |
+| email      | VARCHAR(50) UNIQUE | 이메일 주소 (중복 불가)
+| nickname   | VARCHAR(10) NOT NULL, UNIQUE     | 닉네임 (NULL X, 중복 불가)                       |
+| social_provider | VARCHAR(20) NOT NULL | 로그인 제공자(local, kakao, google 등) |
+| social_id  | VARCHAR(50) UNIQUE(social_id, social_provider) | 소셜 서비스에서의 고유 ID |
 | role       | ENUM('USER', 'BUSKER', 'ADMIN') NOT NULL | USER / BUSKER / ADMIN 등     |
 | created_at | DATETIME NOT NULL    | 가입일                       |
 | updated_at | DATETIME             | 수정일                       |
 | is_deleted | BOOLEAN DEFAULT FALSE | Soft Delete                  |
 | deleted_at | DATETIME             | 탈퇴일                       |
->💡 ENUM 타입은 프론트에서 한글로 매핑!
+>💡 `ENUM` 타입은 프론트에서 한글로 매핑!
+>
+>💡 제약조건: `UNIQUE(social_id, social_provider)` | 같은 `social_provider`에서 동일한 `social_id`가 두 번 들어오면 안 된다.
 ---
 
 ## 📌 Busking (버스킹 일정)
@@ -95,7 +100,7 @@
 | updated_at | DATETIME                          | 수정일                                     | 
 | is_deleted | BOOLEAN DEFAULT FALSE             | Soft Delete                   |
 
->💡 제약조건: UNIQUE(post_id, user_id) | 하나의 게시글에 한 유저당 리뷰 하나만 작성 가능.
+>💡 제약조건: `UNIQUE(post_id, user_id)` | 하나의 게시글에 한 유저당 리뷰 하나만 작성 가능.
 
 ---
 
@@ -140,7 +145,7 @@
 | user_id    | BIGINT NOT NULL             | 조회한 사용자 ID (FK)          |
 | viewed_at  | DATETIME NOT NULL           | 조회 시간                      |
 
->💡 제약조건: UNIQUE(post_id, post_type, user_id) | 동일 사용자는 한 게시글에 대해 단 1회만 조회 수가 증가한다.
+>💡 제약조건: `UNIQUE(post_id, post_type, user_id)` | 동일 사용자는 한 게시글에 대해 단 1회만 조회 수가 증가한다.
 
 ---
 
