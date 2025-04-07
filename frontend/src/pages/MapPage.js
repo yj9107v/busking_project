@@ -7,7 +7,7 @@ function MapPage() {
         <div>
             <h1>🗺️ 버스킹 지도</h1>
             <MapComponent />
-            <Link to="/promotion">
+            <Link to="/promotions">
                 <button>버스커 홍보 게시판 가기</button>
             </Link>
         </div>
