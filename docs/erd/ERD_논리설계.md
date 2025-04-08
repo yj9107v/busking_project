@@ -22,7 +22,7 @@
 | id         | BIGINT (PK)          | 사용자 고유 ID               |
 | username   | VARCHAR(20) UNIQUE     | 로그인 ID (중복 불가)         |
 | password   | VARCHAR(255)      | 비밀번호 (암호화)            |
-| email      | VARCHAR(50) UNIQUE | 이메일 주소 (중복 불가)
+| email      | VARCHAR(100) UNIQUE | 이메일 주소 (중복 불가)
 | nickname   | VARCHAR(10) NOT NULL, UNIQUE     | 닉네임 (NULL X, 중복 불가)                       |
 | social_provider | VARCHAR(20) NOT NULL | 로그인 제공자(local, kakao, google 등) |
 | social_id  | VARCHAR(50) UNIQUE(social_id, social_provider) | 소셜 서비스에서의 고유 ID |
