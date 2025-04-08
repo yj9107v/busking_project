@@ -3,7 +3,7 @@ Table User {
   username varchar(20) [unique]
   password varchar(255)
   nickname varchar(10) [unique]
-  email varcahr(50) [unique]
+  email varcahr(100) [unique]
   social_provider varchar(20) [not null]
   social_id varchar(50)
   role enum(USER, BUSKER, ADMIN) [not null]
