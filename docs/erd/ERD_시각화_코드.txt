@@ -6,7 +6,7 @@ Table User {
   email varcahr(100) [unique]
   provider varchar(20) [not null, default: 'local']
   social_id varchar(50)
-  role enum(USER, BUSKER, ADMIN) [not null]
+  role enum(USER, ADMIN) [not null, default: 'USER']
   created_at datetime [not null]
   updated_at datetime
   is_deleted boolean [default: false]
