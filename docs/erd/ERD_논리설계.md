@@ -26,7 +26,7 @@
 | nickname   | VARCHAR(10) NOT NULL, UNIQUE     | 닉네임 (NULL X, 중복 불가)                       |
 | provider | VARCHAR(20) NOT NULL, DEFAULT 'local' | 로그인 제공자(디폴트: local) (kakao, google 등) |
 | social_id  | VARCHAR(50) UNIQUE(social_id, social_provider) | 소셜 서비스에서의 고유 ID |
-| role       | ENUM('USER', 'BUSKER', 'ADMIN') NOT NULL | USER / BUSKER / ADMIN 등     |
+| role       | ENUM('USER', 'ADMIN') NOT NULL, DEFAULT 'USER' | USER / ADMIN (디폴트: USER)     |
 | created_at | DATETIME NOT NULL    | 가입일                       |
 | updated_at | DATETIME             | 수정일                       |
 | is_deleted | BOOLEAN DEFAULT FALSE | Soft Delete                  |
