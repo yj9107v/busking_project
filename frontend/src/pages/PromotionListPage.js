@@ -2,8 +2,6 @@ import React, {useEffect, useState} from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './PromotionListPage.css'; // 스타일 따로 관리하고 싶을 때
 
-const {kakao} = window;
-
 const PromotionListPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -56,39 +54,6 @@ const PromotionListPage = () => {
         navigate(`/promotions`, {replace: true});
     }, [location.state, navigate]);
 
-    // 미니맵 렌더링
-    useEffect(() => {
-        const renderMiniMaps = () => {
-            posts.forEach((post) => {
-                const container = document.getElementById(`map-${post.id}`);
-                if(!container) return;
-
-                const geocoder = new window.kakao.maps.services.Geocoder();
-
-                geocoder.addressSearch(post.place, (result, status) => {
-                    if(status === window.kakao.maps.services.Status.OK) {
-                        const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
-                        const mapOption = {
-                            center: coords,
-                            level: 4,
-                        };
-
-                        const map = new window.kakao.maps.Map(container, mapOption);
-                        new window.kakao.maps.Marker({
-                            map: map,
-                            position: coords,
-                        });
-                    }
-                });
-            });
-        };
-
-        if(window.kakao && window.kakao.maps && window.kakao.maps.services && posts.length > 0) {
-            // posts가 완전히 반영된 후에 미니맵 그리기
-            setTimeout(renderMiniMaps, 300); // 0.3초 뒤에 렌더
-        }
-    }, [posts]);
-
     return (
         <div className="promotion-list-container">
             <h2>📢 버스커 홍보 게시판</h2>
@@ -98,17 +63,18 @@ const PromotionListPage = () => {
             {posts.map((post) => (
                 <div key={post.id} className="promotion-card">
                     <div className="promotion-info">
-                        <h3>{post.title}</h3>
+                        <h3>
+                            <Link
+                                to={`/promotions/${post.id}`}
+                                state={{post}} // 게시물 전체를 넘겨줌
+                                style={{color: 'blue', textDecoration: 'underline', cursor: 'pointer'}}
+                            >
+                                {post.title}
+                            </Link>
+                        </h3>
                         <p><strong>카테고리:</strong> {post.category}</p>
-                        <p>{post.content}</p>
                         <p><strong>장소:</strong> {post.place}</p>
-                        {post.mediaUrl && (
-                            <div>
-                                <img src={post.mediaUrl} alt="미디어" style={{ maxWidth: '300px' }} />
-                            </div>
-                        )}
                     </div>
-                    <div id={`map-${post.id}`} className="mini-map"></div>
 
                     {/*게시물 수정 버튼 추가*/}
                     <button 
