@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import MapPage from './pages/MapPage';
 import PromotionListPage from './pages/PromotionListPage';
 import PromotionCreatePage from './pages/PromotionCreatePage';
+import PromotionEditPage from './pages/PromotionEditPage';
+import PromotionPage from './pages/PromotionPage';
 
 function App() {
     return (
@@ -14,6 +16,8 @@ function App() {
                 <Route path="/" element={<MapPage />} />
                 <Route path="/promotions" element={<PromotionListPage />} />
                 <Route path="/promotions/new" element={<PromotionCreatePage />} />
+                <Route path="/promotions/edit/:id" element={<PromotionEditPage />} />
+                <Route path="/promotions/:id" element={<PromotionPage />} />
             </Routes>
         </Router>
     );
