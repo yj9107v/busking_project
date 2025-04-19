@@ -32,7 +32,7 @@
 - 가입 시 기본 role은 'USER'로 설정된다.
 
 ### 2. 로그인
-- 사용자는 username 또는 email + password 로 로그인할 수 있다.
+- 사용자는 username + password 로 로그인할 수 있다.
 - 소셜 로그인의 경우 provider, provider_id를 통해 자동 로그인 처리된다.
 - 성공 시 JWT 토큰을 발급받는다.
 
