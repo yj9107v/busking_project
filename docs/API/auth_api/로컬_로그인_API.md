@@ -1,5 +1,6 @@
 # 🔐 로컬 로그인 API 명세서
-> 작성 날짜: 2025/04/19
+> 작성: 2025/04/19
+> 수정: 2025/04/20 → 성공 시 응답 `body`문에 `email`, `provider` 필드를 추가. 먼저 만든 코드와 비교했을 때 추가하는 것이 더 실무적으로 적절하다고 판단.
 
 사용자가 아이디와 비밀번호를 입력하여 인증하고, 서버로부터 JWT 토큰을 발급받는 `API`입니다.
 
@@ -67,7 +68,9 @@ Content-Type: application/json
     "user": {
       "id": 1,
       "username": "busking123",
-      "nickname": "버스킹짱"
+      "nickname": "버스킹짱",
+      "email": "example.com",
+      "provider": "local"
     }
   }
 }
@@ -92,6 +95,8 @@ Content-Type: application/json
 | `data.user.id`       | number            | 로그인한 사용자 ID                                        |
 | `data.user.username` | string            | 사용자 계정 ID                                          |
 | `data.user.nickname` | string            | 사용자 닉네임                                            |
+| `data.user.email`    | string            | 사용자 이메일                                           |
+| `data.user.provider` | string            | 로그인 제공자(`local`)                                   |
 
 ---
 
