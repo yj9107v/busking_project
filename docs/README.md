@@ -1,17 +1,10 @@
-# "기획, ERD, API 문서 저장 폴더"
-
-## 📘 ERD 설계
-
-### ✅ ERD 관련 파일 정리
-
-| 파일명 | 설명 |
-|--------|------|
-| [ERD_논리설계.md](erd/ERD_논리설계.md) | 테이블 구조 및 제약조건 정리 |
-| [ERD_시각화_코드.txt](erd/ERD_시각화_코드.txt) | dbdiagram.io 기반 ERD 코드 (txt 형식) |
-| [ERD_시각화.pdf](erd/ERD_시각화.pdf) | ERD 시각화 다이어그램 (PDF 보기용) |
+# 📌 기획, ERD, API 문서 저장 폴더
+> 작성 기간: 2025/03/23 ~
 
 ---
 
-### 💡 기타 참고
+## 📘 [기능 및 유즈케이스](Feature_List)
 
-- `ERD_시각화.txt` 파일은 [https://dbdiagram.io](https://dbdiagram.io)에서 복사 → 붙여넣으면 바로 시각화된다.
+## 📘 [ERD 설계](erd)
+
+## 📘 [API 명세서](API)
