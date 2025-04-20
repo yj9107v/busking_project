@@ -36,6 +36,10 @@ const PromotionListPage = () => {
         const state = location.state;
         console.log("현재 location.state:", state);
 
+        if(state?.deletePostId) {
+            setPosts((prev) => prev.filter((post) => Number(post.id) !== Number(state.deletePostId)));
+        }
+        
         if(state?.newPost) {
             setPosts((prev) => [...prev, state.newPost]);
         }
