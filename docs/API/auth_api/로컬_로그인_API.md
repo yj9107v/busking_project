@@ -70,7 +70,7 @@ Content-Type: application/json
       "id": 1,
       "username": "busking123",
       "nickname": "버스킹짱",
-      "email": "example.com",
+      "email": "local@example.com",
       "provider": "local"
     }
   }
