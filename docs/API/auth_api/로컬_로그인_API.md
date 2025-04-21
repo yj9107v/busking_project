@@ -3,7 +3,7 @@
 > 
 > ❗수정: 04/20 → 성공 시 응답 `body`문에 `email`, `provider` 필드를 추가. 먼저 만든 코드와 비교했을 때 추가하는 것이 더 실무적으로 적절하다고 판단.
 >
-> ❗수정: 04/21 → 성공 시 응답 `body`문에 `email` example.com >> local@example.com 으로 정규식에 맞게 수정.
+> ❗수정: 04/21 → 성공 시 응답 `body`문에 `email`: example.com >> local@example.com 으로 정규식에 맞게 수정.
 
 사용자가 아이디와 비밀번호를 입력하여 인증하고, 서버로부터 JWT 토큰을 발급받는 `API`입니다.
 
