@@ -76,6 +76,7 @@
 | id         | BIGINT (PK)               | 게시글 ID                    |
 | uuid       | CHAR(36) NOT NULL, UNIQUE | 외부 공개용 식별자           |
 | user_id    | BIGINT NOT NULL (FK)      | 작성자 ID (User.id)          |
+| location_id | BIGINT NOT NULL (FK)     | 장소 ID (Location.id)         |
 | title      | VARCHAR(100) NOT NULL     | 제목                         |
 | content    | TEXT NOT NULL             | 내용                         |
 | media_url  | TEXT                      | 사진/영상 URL                |
