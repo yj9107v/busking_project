@@ -1,73 +1,82 @@
 import React, { useState } from 'react';
 import CommentForm from './CommentForm';
+import api from '../../api/axios';
 
 const CommentItem = ({ comment, replies, onDelete, onReply, onUpdate }) => {
-    const [showReplyForm, setShowReplyForm] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [editedContent, setEditedContent] = useState(comment.content);
+    const [showReplyForm, setShowReplyForm] = useState(false);
 
-    const handleEditSubmit = (e) => {
-        e.preventDefault();
-        if (!editedContent.trim()) return;
+    const handleUpdate = async () => {
+        try {
+            const res = await api.put(`/comments/${comment.id}`, {
+                postId: comment.postId,
+                userId: comment.userId,
+                content: editedContent,
+                parentId: comment.parentId,
+            });
+            onUpdate(res.data);
+            setIsEditing(false);
+        } catch (err) {
+            console.error('댓글 수정 실패:', err);
+            alert('수정에 실패했습니다.');
+        }
+    };
 
-        const updated = {
-            ...comment,
-            content: editedContent,
-            updatedAt: new Date().toISOString(),
-        };
-        onUpdate(updated);
-        setIsEditing(false);
+    const handleDelete = async () => {
+        const confirmDelete = window.confirm("댓글을 삭제하시겠습니까?");
+        if (!confirmDelete) return;
+
+        try {
+            await api.delete(`/comments/${comment.id}`);
+            onDelete(comment.id);
+        } catch (err) {
+            console.error('삭제 실패:', err);
+            alert('삭제에 실패했습니다.');
+        }
     };
 
     return (
-        <div style={{ marginLeft: comment.parentId ? 30 : 0, marginTop: '10px' }}>
-            <div style={{ border: '1px solid #ccc', padding: '10px' }}>
-                {isEditing ? (
-                    <form onSubmit={handleEditSubmit}>
-                        <textarea
-                            value={editedContent}
-                            onChange={(e) => setEditedContent(e.target.value)}
-                            rows={3}
-                            cols={60}
-                        />
-                        <br />
-                        <button type="submit">💾 저장</button>
-                        <button onClick={() => setIsEditing(false)} type="button" style={{ marginLeft: '10px' }}>
-                            취소
-                        </button>
-                    </form>
-                ) : (
-                    <>
-                        <p>{comment.content}</p>
-                        <small style={{ color: 'gray' }}>
-                            작성일: {new Date(comment.createdAt).toLocaleString()}
-                            {comment.updatedAt && ` (수정됨: ${new Date(comment.updatedAt).toLocaleString()})`}
-                        </small>
-                        <br />
-                        <button onClick={() => setShowReplyForm((prev) => !prev)}>
-                            {showReplyForm ? '답글 닫기' : '답글 입력'}
-                        </button>
-                        <button onClick={() => setIsEditing(true)} style={{ marginLeft: '10px' }}>
-                            ✏️ 수정
-                        </button>
-                        <button onClick={() => onDelete(comment.id)} style={{ marginLeft: '10px' }}>
-                            삭제
-                        </button>
-                    </>
-                )}
-            </div>
-
-            {showReplyForm && !isEditing && (
-                <CommentForm
-                    postId={comment.postId}
-                    parentId={comment.id}
-                    onSubmit={(newReply) => {
-                        onReply(newReply);
-                        setShowReplyForm(false);
-                    }}
-                />
+        <div style={{ marginBottom: '10px', marginLeft: comment.parentId ? '30px' : '0' }}>
+            {isEditing ? (
+                <>
+                    <textarea
+                        value={editedContent}
+                        onChange={(e) => setEditedContent(e.target.value)}
+                        rows={3}
+                        cols={50}
+                    />
+                    <br />
+                    <button onClick={handleUpdate}>💾 저장</button>
+                    <button onClick={() => setIsEditing(false)}>취소</button>
+                </>
+            ) : (
+                <>
+                    <div>{comment.content}</div>
+                    <div style={{ fontSize: '12px', color: 'gray' }}>
+                        작성일: {new Date(comment.createdAt).toLocaleString()}
+                        {comment.updatedAt && comment.updatedAt !== comment.createdAt &&
+                            ` (수정됨: ${new Date(comment.updatedAt).toLocaleString()})`}
+                    </div>
+                    <button onClick={() => setIsEditing(true)}>✏️ 수정</button>
+                    <button onClick={handleDelete}>🗑️ 삭제</button>
+                    <button onClick={() => setShowReplyForm(!showReplyForm)}>
+                        {showReplyForm ? '취소' : '답글 입력'}
+                    </button>
+                </>
             )}
 
+            {showReplyForm && (
+                <div style={{ marginTop: '5px' }}>
+                    <CommentForm
+                        postId={comment.postId}
+                        parentId={comment.id}
+                        onSubmit={onReply}
+                    />
+                </div>
+            )}
+
+            {/* 답글 렌더링 */}
             {replies?.map((reply) => (
                 <CommentItem
                     key={reply.id}

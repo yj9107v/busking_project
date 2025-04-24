@@ -1,22 +1,27 @@
 import React, { useState } from 'react';
+import api from '../../api/axios';
 
 const CommentForm = ({ postId, parentId = null, onSubmit }) => {
     const [content, setContent] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!content.trim()) return;
 
         const newComment = {
-            id: Date.now(),
             postId,
+            userId: 1, // TODO: 로그인 유저로 대체
             parentId,
             content,
-            createdAt: new Date().toISOString(),
         };
 
-        onSubmit(newComment);
-        setContent('');
+        try {
+            const res = await api.post('/comments', newComment);
+            onSubmit(res.data); // 부모 컴포넌트에 전달
+            setContent('');
+        } catch (err) {
+            console.error('댓글 등록 실패:', err);
+            alert('댓글 등록에 실패했습니다.');
+        }
     };
 
     return (
@@ -30,7 +35,7 @@ const CommentForm = ({ postId, parentId = null, onSubmit }) => {
                 required
             />
             <br />
-            <button type="submit">{parentId ? '답글 등록' : '댓글 등록'}</button>
+            <button type="submit">작성</button>
         </form>
     );
 };

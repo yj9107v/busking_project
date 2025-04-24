@@ -1,40 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import CommentForm from './CommentForm';
 import CommentItem from './CommentItem';
+import api from '../../api/axios';
 
 const CommentList = ({ postId }) => {
     const [comments, setComments] = useState([]);
 
+    // 🔁 댓글 목록 불러오기 (GET /api/comments?postId=)
     useEffect(() => {
-        const initial = {
-        1: [
-            {
-                id: 1,
-                postId,
-                parentId: null,
-                content: '첫 번째 글 댓글입니다.',
-                createdAt: new Date().toISOString(),
-            },
-            {
-                id: 2,
-                postId,
-                parentId: 1,
-                content: '답글입니다.',
-                createdAt: new Date().toISOString(),
-            },
-        ],
-        2: [
-            {
-                id: 3,
-                postId: 2,
-                parentId: null,
-                content: '두 번째 글 댓글입니다.',
-                createdAt: new Date().toISOString(),
-            },
-        ],
-    };
-    setComments(initial[postId] || []);
-}, [postId]);
+        api.get(`/comments?postId=${postId}`)
+            .then((res) => setComments(res.data))
+            .catch((err) => {
+                console.error('댓글 불러오기 실패:', err);
+                alert('댓글을 불러오지 못했습니다.');
+            });
+    }, [postId]);
 
     const handleAddComment = (newComment) => {
         setComments((prev) => [...prev, newComment]);
