@@ -1,21 +1,42 @@
-import React from 'react';
-import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import CommentList from '../../components/Comment/CommentList';
+import api from '../../api/axios';
 
 function BoardPage() {
     const { id } = useParams();
-    const location = useLocation();
     const navigate = useNavigate();
-    const post = location.state?.post;
+    const [post, setPost] = useState(null);
 
+    // ✅ 게시글 단건 조회
+    useEffect(() => {
+        api.get(`/boards/${id}`)
+            .then(res => setPost(res.data))
+            .catch(err => {
+                console.error("게시글 조회 실패:", err);
+                alert("존재하지 않는 게시글입니다.");
+                navigate("/boards");
+            });
+    }, [id, navigate]);
+
+    // ✅ 게시글 삭제
     const handleDelete = () => {
         const confirmDelete = window.confirm("정말 삭제하시겠습니까?");
         if (!confirmDelete) return;
-        navigate('/boards', { state: { deletePostId: Number(id) } });
+
+        api.delete(`/boards/${id}`)
+            .then(() => {
+                alert("게시글이 삭제되었습니다.");
+                navigate("/boards", { state: { deletePostId: Number(id) } });
+            })
+            .catch(err => {
+                console.error("삭제 실패:", err);
+                alert("삭제에 실패했습니다.");
+            });
     };
 
     if (!post) {
-        return <div>게시글 데이터를 불러올 수 없습니다.</div>;
+        return <div>게시글 데이터를 불러오는 중...</div>;
     }
 
     return (

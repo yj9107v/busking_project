@@ -1,45 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './BoardListPage.css';
+import api from '../../api/axios';
 
 const BoardListPage = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [posts, setPosts] = useState([]);
-    const [comments, setComments] = useState([]);
 
+    // 🔄 게시글 목록 조회 (GET /api/boards)
     useEffect(() => {
-        // 댓글 mock 데이터
-        setComments([
-            { id: 1, postId: 1, parentId: null, content: '좋은 글 감사합니다!', createdAt: new Date().toISOString() },
-            { id: 2, postId: 1, parentId: 1, content: '저도 동감입니다!', createdAt: new Date().toISOString() },
-            { id: 3, postId: 2, parentId: null, content: '잘 읽었어요!', createdAt: new Date().toISOString() },
-        ]);
+        api.get("/boards")
+            .then((res) => setPosts(res.data))
+            .catch((err) => {
+                console.error("목록 불러오기 실패:", err);
+                alert("게시글을 불러오지 못했습니다.");
+            });
     }, []);
 
-    useEffect(() => {
-        if (posts.length === 0) {
-            setPosts([
-                {
-                    id: 1,
-                    title: '첫 번째 자유 글입니다',
-                    content: '자유롭게 이야기해보세요.',
-                    createdAt: new Date().toISOString(),
-                },
-                {
-                    id: 2,
-                    title: '두 번째 게시글',
-                    content: '댓글 기능도 준비 중입니다.',
-                    createdAt: new Date().toISOString(),
-                },
-            ]);
-        }
-    }, []);
-
+    // 🔁 상태 기반 업데이트 (등록, 수정, 삭제)
     useEffect(() => {
         const state = location.state;
-        if(state?.newPost) setPosts((prev) => [...prev, state.newPost]);
-        if(state?.updatedPost) {
+        if (!state) return;
+
+        if (state.newPost) {
+            setPosts((prev) => [...prev, state.newPost]);
+        }
+
+        if (state.updatedPost) {
             setPosts((prev) =>
                 prev.map((post) =>
                     Number(post.id) === Number(state.updatedPost.id)
@@ -48,16 +36,15 @@ const BoardListPage = () => {
                 )
             );
         }
-        if(state?.deletePostId) {
+
+        if (state.deletePostId) {
             setPosts((prev) =>
                 prev.filter((post) => Number(post.id) !== Number(state.deletePostId))
             );
         }
+
         navigate(`/boards`, { replace: true });
     }, [location.state, navigate]);
-
-    const getCommentCount = (postId) =>
-        comments.filter((c) => c.postId === postId).length;
 
     return (
         <div className="board-list-container">
@@ -76,10 +63,9 @@ const BoardListPage = () => {
                             </Link>
                         </h3>
                         <p>작성일: {new Date(post.createdAt).toLocaleString()}</p>
-                        <p>💬 댓글: {getCommentCount(post.id)}개</p>
                     </div>
-                    <button 
-                        onClick={() => 
+                    <button
+                        onClick={() =>
                             navigate(`/boards/edit/${post.id}`, {
                                 state: { post },
                             })

@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../../api/axios";
 
 const BoardCreatePage = () => {
     const navigate = useNavigate();
@@ -7,6 +8,7 @@ const BoardCreatePage = () => {
     const [formData, setFormData] = useState({
         title: '',
         content: '',
+        userId: 1 // TODO: 로그인 사용자로 교체 예정
     });
 
     const handleChange = (e) => {
@@ -17,16 +19,17 @@ const BoardCreatePage = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         
-        const newPost = {
-            id: Date.now(),
-            ...formData,
-            createdAt: new Date().toISOString(),
-        };
-
-        navigate('/boards', {state: {newPost}});
+        try {
+            const res = await api.post("/boards", formData);
+            alert("게시글이 등록되었습니다.");
+            navigate("/boards", {state: {newPost: res.data}});
+        } catch (err) {
+            console.error("등록 실패:", err);
+            alert("등록에 실패했습니다.");
+        }
     };
 
     return (
