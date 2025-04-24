@@ -1,42 +1,30 @@
 import React, {useState, useEffect} from 'react';
 import ReviewItem from './ReviewItem';
 import ReviewForm from './ReviewForm';
+import api from '../../api/axios';
 
 const ReviewList = ({postId, onReviewsLoaded}) => {
     const [reviews, setReviews] = useState([]);
 
+    // 리뷰 목록 가져오기
     useEffect(() => {
-        // 처음 렌더링 시 mock 리뷰 데이터 로드
-        const mockReviews = [
-            {
-                id: 1,
-                postId,
-                userId: 1,
-                rating: 5,
-                comment: '최고의 공연이었어요!',
-                createdAt: new Date().toISOString(),
-            },
-            {
-                id: 2,
-                postId,
-                userId: 2,
-                rating: 4,
-                comment: '즐거웠습니다!',
-                createdAt: new Date().toISOString(),
-            }
-        ];
-        setReviews(mockReviews);
-        onReviewsLoaded?.(mockReviews); // 부모에게 전달
+        api.get(`/reviews?postId=${postId}`)
+            .then(res => {
+                setReviews(res.data);
+                onReviewsLoaded?.(res.data);
+            })
+            .catch(err => {
+                console.error("리뷰 목록 불러오기 실패:", err);
+            });
     }, [postId, onReviewsLoaded]);
 
     const handleAddReview = (newReview) => {
-        const updated = [...reviews, newReview];
-        setReviews(updated);
-        onReviewsLoaded?.(updated);
+        setReviews(prev => [...prev, newReview]);
+        onReviewsLoaded?.([...reviews, newReview]);
     };
 
     const handleDeleteReview = (reviewId) => {
-        const updated = reviews.filter((r) => r.id !== reviewId);
+        const updated = reviews.filter(r => r.id !== reviewId);
         setReviews(updated);
         onReviewsLoaded?.(updated);
     };

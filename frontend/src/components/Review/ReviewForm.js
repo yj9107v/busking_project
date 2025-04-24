@@ -1,24 +1,30 @@
 import React, {useState} from "react";
+import api from "../../api/axios";
 
 const ReviewForm = ({postId, onAddReview}) => {
     const [rating, setRating] = useState(5);
     const [comment, setComment] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         const newReview = {
-            id: Date.now(),
             postId,
-            userId: 999, // 현재는 mock user
+            userId: 1, // TODO: 로그인 된 사용자 정보로 교체
             rating,
             comment,
-            createdAt: new Date().toISOString(),
         };
 
-        onAddReview(newReview);
-        setRating(5);
-        setComment('');
+        try {
+            const res = await api.post('/reviews', newReview);
+            alert('리뷰가 등록되었습니다.');
+            onAddReview(res.data);
+            setRating(5);
+            setComment('');
+        } catch (err) {
+            console.error('리뷰 등록 실패:', err);
+            alert('리뷰 등록에 실패했습니다.');
+        }
     };
 
     return(
@@ -38,9 +44,9 @@ const ReviewForm = ({postId, onAddReview}) => {
                 <textarea
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
-                    rows={4}
+                    rows={3}
                     cols={50}
-                    placeholder="리뷰를 입력하세요"
+                    placeholder="리뷰를 작성해주세요"
                     required
                 />
             </div>
