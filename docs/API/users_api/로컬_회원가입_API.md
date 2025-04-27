@@ -48,7 +48,7 @@ Content-Type: application/json
 | username | string | `5~20자`, `영문 + 숫자 + 밑줄(_)`만 허용, `중복 불가`(고유) | 로그인용 ID      | 
 | password | string | `8~20자`, `영문 + 숫자 + 특수문자`만 허용                  | 로그인 비밀번호     |
 | email | string | `100자 이하`, `이메일 형식`만 허용, `중복 불가`(고유)       | 알림 및 인증용 이메일 |
-| nickname | string | `2~10자`, `한글, 영문, 숫자`만 허용, `중복 불가`(고유)     | 사용자 표시 이름    |
+| nickname | string | `2~30자`, `한글, 영문, 숫자`만 허용, `중복 불가`(고유)     | 사용자 표시 이름    |
 
 ---
 
@@ -108,7 +108,7 @@ Location: /api/users/1
 | `email` 중복    | 이미 사용 중인 이메일입니다. (동일한 이메일 로컬 or 소셜 회원가입 완료) | `USER_EMAIL_DUPLICATED`        |
 | `email` 형식    | 유효한 이메일 형식이 아닙니다. `ex) example@google.com`  | `USER_EMAIL_INVALID_FORMAT`    |
 | `nickname` 중복 | 이미 사용 중인 닉네임입니다.                            | `USER_NICKNAME_DUPLICATED`     |
-| `nickname` 형식 | 닉네임은 2~10자, 한글, 영문, 숫자만 허용됩니다.              | `USER_NICKNAME_INVALID_FORMAT` |
+| `nickname` 형식 | 닉네임은 2~30자, 한글, 영문, 숫자만 허용됩니다.              | `USER_NICKNAME_INVALID_FORMAT` |
 
 
 ### 🚫 400 Bad Request (중복 시)
