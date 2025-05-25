@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 
 // ✅ 카카오 맵 API 스크립트 경로를 .env에서 불러오기
-const KAKAO_MAP_SRC = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.REACT_APP_KAKAO_MAP_API}&autoload=false&libraries=services`;
+const KAKAO_MAP_SRC = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.REACT_APP_KAKAO_API_KEY}&autoload=false&libraries=services`;
 
-const KakaoMapWithMarkers = () => {
+const KakaoMap = () => {
   const mapRef = useRef(null);
   const markerRef = useRef(null);
   const currentMarkerRef = useRef(null);
@@ -251,5 +251,5 @@ const KakaoMapWithMarkers = () => {
     );
   };
   
-  export default KakaoMapWithMarkers;
+  export default KakaoMap;
   
