@@ -1,0 +1,25 @@
+# application.yml 파일 무시하기
+**/application.yml
+
+# .gradle
+.gradle/
+
+# build
+**/build/
+
+# iml 확장자 파일
+*.iml
+
+# .idea
+.idea
+
+# 로그
+*.log
+
+# 임시 파일
+*.tmp
+*.bak
+*.swp
+.DS_Store
+
+
