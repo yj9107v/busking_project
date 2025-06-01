@@ -16,7 +16,7 @@ public class BuskingProjectApplication {
 	@Scheduled(fixedRate = 5000)
 	public void scheduledTask() {
 		System.out.println("Task executed every 5 seconds");
-
+		// pull request 테스트.
 
 	}
 }
