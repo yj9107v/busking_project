@@ -1,0 +1,30 @@
+name: CI when PR is Closed to Develop
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - develop
+
+jobs:
+  build-on-pr-close:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ✅ 소스코드 체크아웃
+        uses: actions/checkout@v3
+
+      - name: ☕ Microsoft OpenJDK 21 설정
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'microsoft'
+
+      - name: 🧹 Gradle 실행 권한 부여
+        run: chmod +x ./gradlew
+
+      - name: 🛠 빌드
+        run: ./gradlew build
+
+      - name: ✅ 테스트
+        run: ./gradlew test
