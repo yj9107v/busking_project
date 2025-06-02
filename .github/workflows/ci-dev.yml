@@ -21,10 +21,13 @@ jobs:
           distribution: 'microsoft'
 
       - name: 🧹 Gradle 실행 권한 부여
+        working-directory: backend
         run: chmod +x ./gradlew
 
       - name: 🛠 빌드
+        working-directory: backend
         run: ./gradlew build
 
       - name: ✅ 테스트
+        working-directory: backend
         run: ./gradlew test
