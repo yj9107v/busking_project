@@ -49,4 +49,4 @@
 - [ERD 설계](docs/erd/)
 - [API 명세서](docs/API)
 - [기능 목록 및 유즈케이스](docs/Feature_List)
-test trigger
+test trigger 1
