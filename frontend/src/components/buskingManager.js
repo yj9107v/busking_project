@@ -18,6 +18,9 @@ function BuskingManager() {
   const [locationOptions, setLocationOptions] = useState([]);     // 장소 선택 드롭다운용 옵션 목록
   const [selectedLocation, setSelectedLocation] = useState(null); // 지도에 표시할 선택된 장소
 
+  // ✅ 로딩 중이면 먼저 메시지 출력
+  if (isLoading) return <div>⏳ 로딩 중입니다...</div>;
+  
     // ✅ 컴포넌트 마운트 시 장소 목록 불러오기
     useEffect(() => {
       fetch("/api/locations")
