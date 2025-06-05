@@ -1,4 +1,4 @@
-name: CI when PR is Closed to Develop
+name: CI - Backend & Frontend
 
 on:
   pull_request:
@@ -7,27 +7,55 @@ on:
       - develop
 
 jobs:
-  build-on-pr-close:
+  backend:
+    name: 🧪 Backend CI
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: backend
 
     steps:
       - name: ✅ 소스코드 체크아웃
         uses: actions/checkout@v3
 
-      - name: ☕ Microsoft OpenJDK 21 설정
+      - name: ☕ Java 21 설정
         uses: actions/setup-java@v3
         with:
           java-version: '21'
           distribution: 'microsoft'
-
-      - name: 🧹 Gradle 실행 권한 부여
+          
+      - name: 🔧 Gradle 권한 부여
         working-directory: backend
         run: chmod +x ./gradlew
 
-      - name: 🛠 빌드
+      - name: 🏗️ Build 실행
         working-directory: backend
         run: ./gradlew build
 
-      - name: ✅ 테스트
+      - name: ✅ Test 실행
         working-directory: backend
         run: ./gradlew test
+
+  frontend:
+    name: 🎨 Frontend CI
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: ✅ 소스코드 체크아웃
+        uses: actions/checkout@v3
+
+      - name: 🟢 Node.js 18 설정
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: 📦 패키지 설치
+        run: npm ci
+
+      - name: ⚙️ 빌드 실행
+        run: npm run build
