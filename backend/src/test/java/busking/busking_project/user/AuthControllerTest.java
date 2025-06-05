@@ -1,6 +1,6 @@
 package busking.busking_project.user;
 
-import busking.busking_project.user.RegisterRequest;
+import busking.busking_project.user.dto.RegisterRequestDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class AuthControllerTest {
 
     @Test
     void 회원가입_성공() throws Exception {
-        RegisterRequest request = new RegisterRequest();
+        RegisterRequestDto request = new RegisterRequestDto();
         request.setUsername("testuser123");
         request.setPassword("TestPassword123!");
         request.setEmail("test123@example.com");
