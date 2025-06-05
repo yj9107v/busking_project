@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../components/UserContext"; // ✅ UserContext 사용
-import KakaoMap from "../../components/KakaoMap"; // ✅ 지도 컴포넌트 import
+import KakaoMap from "../../components/KakaoMap";       // ✅ 지도 컴포넌트 import
 import api from "../../api/axios";
 
 const PromotionReservationPage = () => {
-  const { user, isLoading } = useUser();
+  const { user, isLoading } = useUser();                // ✅ 사용자 정보 및 로딩 상태
   const navigate = useNavigate();
 
   // ✅ 홍보글 + 장소 + 일정 통합 폼 데이터
@@ -22,8 +22,8 @@ const PromotionReservationPage = () => {
     locationId: '',
   });
 
-  const [locationOptions, setLocationOptions] = useState([]);
-  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [locationOptions, setLocationOptions] = useState([]);     // ✅ 등록된 장소 목록
+  const [selectedLocation, setSelectedLocation] = useState(null); // ✅ 지도에 표시할 장소
 
   // ✅ 장소 목록 불러오기
   useEffect(() => {
@@ -43,11 +43,13 @@ const PromotionReservationPage = () => {
       });
   }, []);
 
+  // ✅ 입력값 상태 변경 핸들러
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  // ✅ 장소 선택 핸들러 (드롭다운에서 선택)
   const handleLocationSelect = (e) => {
     const id = e.target.value;
     setForm((prev) => ({ ...prev, locationId: id }));
@@ -56,6 +58,7 @@ const PromotionReservationPage = () => {
     if (location) setSelectedLocation(location);
   };
 
+  // ✅ 등록 요청 핸들러
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -134,6 +137,21 @@ const PromotionReservationPage = () => {
         <input name="place" placeholder="장소(도로명주소)" value={form.place} onChange={handleChange} required />
         <input name="mediaUrl" placeholder="사진/영상 URL" value={form.mediaUrl} onChange={handleChange} />
 
+        {/* ✅ 선택된 장소 드롭다운 (기 등록된 장소 선택용) */}
+        <select
+          name="locationId"
+          value={form.locationId}
+          onChange={handleLocationSelect}
+          required
+        >
+          <option value="">-- 장소 선택 --</option>
+          {locationOptions.map((loc) => (
+            <option key={loc.id} value={loc.id}>
+              {loc.name}
+            </option>
+          ))}
+        </select>
+
         <hr />
 
         {/* 일정 등록 */}
@@ -144,6 +162,7 @@ const PromotionReservationPage = () => {
         <input type="time" name="endTime" value={form.endTime} onChange={handleChange} required />
         <textarea name="description" placeholder="공연 소개" value={form.description} onChange={handleChange} rows="3" />
 
+        {/* 제출 버튼 */}
         <button type="submit" style={{ marginTop: "20px" }}>등록하기</button>
       </form>
 
