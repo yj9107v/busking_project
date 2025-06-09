@@ -1,4 +1,4 @@
-package busking.busking_project.user;
+package busking.busking_project.user.dto;
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterRequest {
+public class RegisterRequestDto {
     // 회원가입 시 클라이언트에서 전달되는 데이터를 받기 위한 DTO
     // 입력값에 대해 @Valid 유효성 검사 적용
 
