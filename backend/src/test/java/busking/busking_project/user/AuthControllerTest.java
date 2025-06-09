@@ -22,7 +22,7 @@ public class AuthControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Test // 로컬
+    @Test // 로컬 회원가입
     void 회원가입_성공() throws Exception {
         RegisterRequestDto request = new RegisterRequestDto();
         request.setUsername("testuser123");
