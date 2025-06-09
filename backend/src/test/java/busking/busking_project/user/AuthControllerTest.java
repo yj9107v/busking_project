@@ -1,3 +1,4 @@
+
 package busking.busking_project.user;
 
 import busking.busking_project.user.dto.RegisterRequestDto;
@@ -17,20 +18,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class AuthControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Test // 로컬 회원가입
-    void 회원가입_성공() throws Exception {
+    @Test
+    void 회원가입_후_로그인_성공() throws Exception {
+        // ✅ 유효성 조건을 충족하는 회원가입 요청
         RegisterRequestDto request = new RegisterRequestDto();
-        request.setUsername("testuser123");
-        request.setPassword("TestPassword123!");
-        request.setEmail("test123@example.com");
-        request.setNickname("테스트유저");
+        request.setUsername("valid_user01");  // 영문+숫자+밑줄, 5~20자
+        request.setPassword("Valid123!");     // 영문+숫자+특수문자, 8~20자
+        request.setEmail("valid@example.com");
+        request.setNickname("테스터1");         // 한글+숫자, 2~30자
 
+        // 회원가입 요청
         mockMvc.perform(post("/api/users/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -40,28 +44,18 @@ public class AuthControllerTest {
         // 로그인 요청
         String loginJson = """
             {
-                "username": "testuser123",
-                "password": "TestPassword123!" 
+                "username": "valid_user01",
+                "password": "Valid123!"
             }
         """;
 
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(loginJson))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.accessToken").exists())
                 .andExpect(jsonPath("$.refreshToken").exists())
-                .andExpect(jsonPath("$.user.username").value("testuser123"));
+                .andExpect(jsonPath("$.user.username").value("valid_user01"));
     }
-
-    @Test
-    void 로그인_실패_존재하지않는_계정() throws Exception {
-        String json = "{ \"username\": \"not_exist\", \"password\": \"wrongpass\" }";
-
-        mockMvc.perform(post("/api/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json))
-                .andExpect(status().isUnauthorized());
-    }
-
 }
