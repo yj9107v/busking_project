@@ -49,7 +49,7 @@ public class AuthControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.accessToken").exists())
                 .andExpect(jsonPath("$.refreshToken").exists())
-                .andExpect(jsonPath("$.user.username").value("testuser"));
+                .andExpect(jsonPath("$.user.username").value("testuser123"));
     }
 
     @Test
