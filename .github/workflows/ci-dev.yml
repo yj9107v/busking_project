@@ -2,7 +2,7 @@ name: CI - Backend & Frontend
 
 on:
   pull_request:
-    types: [closed]
+    types: [opened, synchronize, reopened] # ✅ PR이 열리거나 수정될 때 CI 실행
     branches:
       - develop
 
