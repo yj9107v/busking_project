@@ -1,4 +1,6 @@
 spring:
+  config:
+    import: "application_secret.yml"
   datasource:
     url: ${DEV_MYSQL_URL}
     username: ${DEV_MYSQL_USERNAME}
