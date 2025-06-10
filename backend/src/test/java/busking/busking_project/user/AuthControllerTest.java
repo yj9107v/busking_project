@@ -17,8 +17,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@AutoConfigureMockMvc
 @ActiveProfiles("test")
+@AutoConfigureMockMvc
 public class AuthControllerTest {
 
     @Autowired
@@ -43,6 +43,7 @@ public class AuthControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
 
+        Thread.sleep(3000);
         // 로그인 요청
         String loginJson = """
             {

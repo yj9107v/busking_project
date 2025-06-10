@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +25,7 @@ public class AuthService {
     /**
      * ✅ 회원가입 처리 및 저장된 유저 반환
      */
+    @Transactional
     public User register(RegisterRequestDto request) {
         // 아이디 중복 검사
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
@@ -52,7 +54,12 @@ public class AuthService {
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        // 즉시 DB에 반영되도록 flush()
+        userRepository.flush();
+
+        return savedUser;
     }
 
     /**
