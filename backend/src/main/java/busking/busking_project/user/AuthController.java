@@ -1,5 +1,7 @@
 package busking.busking_project.user;
 
+import busking.busking_project.user.dto.LoginResponseDto;
+import busking.busking_project.user.dto.RegisterRequestDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -16,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @RestController // ✅ REST API 컨트롤러로 동작 (JSON 반환)
-@RequestMapping("/api/users") // ✅ 기본 URL 경로: /api/users
+@RequestMapping("/api") // ✅ 기본 URL 경로: /api/users
 @CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true") // ✅ CORS 허용 (React 연동)
 public class AuthController {
 
@@ -26,8 +28,8 @@ public class AuthController {
     /**
      * ✅ 회원가입 처리
      */
-    @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request, BindingResult bindingResult) {
+    @PostMapping("/users/register")
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequestDto request, BindingResult bindingResult) {
         // 🔍 유효성 검사 실패 시 에러 응답 반환
         if (bindingResult.hasErrors()) {
             String field = bindingResult.getFieldError().getField();
@@ -106,11 +108,11 @@ public class AuthController {
     /**
      * ✅ 로그인 처리 (세션 + 토큰)
      */
-    @PostMapping("/login")
+    @PostMapping("/auth/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> user, HttpServletRequest request) {
         try {
             // 🔑 로그인 후 토큰 생성
-            LoginResponse loginResponse = authService.loginWithTokens(
+            LoginResponseDto loginResponse = authService.loginWithTokens(
                     user.get("username"),
                     user.get("password"),
                     request
@@ -151,7 +153,7 @@ public class AuthController {
     /**
      * ✅ 소셜 로그인 성공 시 프론트로 리디렉션
      */
-    @GetMapping("/login-success")
+    @GetMapping("/auth/login-success")
     public void loginSuccess(HttpServletResponse response) throws IOException {
         response.sendRedirect("http://localhost:3000");
     }
@@ -159,7 +161,7 @@ public class AuthController {
     /**
      * ✅ 현재 로그인된 사용자 정보 반환
      */
-    @GetMapping("/me")
+    @GetMapping("/users/me")
     public ResponseEntity<?> getCurrentUser(Authentication auth) {
         if (auth == null || !auth.isAuthenticated()) {
             return ResponseEntity.status(401).body(Map.of("error", "로그인되지 않음"));
@@ -202,7 +204,7 @@ public class AuthController {
     /**
      * ✅ 닉네임 수정
      */
-    @PutMapping("/update-nickname")
+    @PutMapping("/users/me/update-nickname")
     public ResponseEntity<?> updateNickname(Authentication authentication, @RequestBody Map<String, String> request) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(401).body("로그인되지 않음");
@@ -235,7 +237,7 @@ public class AuthController {
     /**
      * ✅ 회원 탈퇴 처리 (Soft Delete)
      */
-    @DeleteMapping("/withdraw")
+    @DeleteMapping("/users/me/withdraw")
     public ResponseEntity<String> withdraw(Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(401).body("로그인되지 않음");
@@ -259,7 +261,7 @@ public class AuthController {
     /**
      * ✅ 탈퇴 회원 복구
      */
-    @PostMapping("/restore")
+    @PostMapping("/users/restore")
     public ResponseEntity<?> restoreUser(@RequestBody Map<String, String> request) {
         String email = request.get("email");
         try {

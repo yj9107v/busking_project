@@ -18,15 +18,24 @@ function BuskingManager() {
   const [locationOptions, setLocationOptions] = useState([]);     // 장소 선택 드롭다운용 옵션 목록
   const [selectedLocation, setSelectedLocation] = useState(null); // 지도에 표시할 선택된 장소
 
-    // ✅ 컴포넌트 마운트 시 장소 목록 불러오기
-    useEffect(() => {
+  // ✅ 장소 목록 불러오기 (React Hook은 조건 없이 항상 최상단에서 호출되어야 함)
+  useEffect(() => {
+    // 로딩이 끝난 후에만 fetch 실행
+    if (!isLoading) {
       fetch("/api/locations")
         .then((res) => res.json())
         .then(setLocationOptions) // 장소 목록 상태에 저장
         .catch((err) => console.error("장소 목록 조회 실패", err));
-    }, []);
+    }
+  }, [isLoading]);
 
-      // ✅ 장소 선택 시 실행되는 핸들러
+  // ✅ 로딩 중이면 먼저 메시지 출력
+  if (isLoading) return <div>⏳ 로딩 중입니다...</div>;
+
+  // ✅ 로그인하지 않은 경우 안내
+  if (!user) return <div>로그인이 필요합니다.</div>;
+
+  // ✅ 장소 선택 시 실행되는 핸들러
   const handleLocationSelect = (e) => {
     const id = e.target.value;
     setForm((prev) => ({ ...prev, locationId: id })); // 폼 상태에 반영
@@ -35,15 +44,15 @@ function BuskingManager() {
     if (location) setSelectedLocation(location); // 지도에 표시할 장소 설정
   };
 
-    // ✅ 날짜/시간/소개 입력 필드 변경 시 처리
-    const handleChange = (e) => {
-      setForm((prev) => ({
-        ...prev,
-        [e.target.name]: e.target.value,
-      }));
-    };
+  // ✅ 날짜/시간/소개 입력 필드 변경 시 처리
+  const handleChange = (e) => {
+    setForm((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
-      // ✅ 폼 제출 시 실행되는 함수 (일정 등록 요청)
+  // ✅ 폼 제출 시 실행되는 함수 (일정 등록 요청)
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!user) return alert("로그인 후 등록해주세요."); // 인증 확인
@@ -88,79 +97,78 @@ function BuskingManager() {
     }
   };
 
-    // ✅ 화면 렌더링
-    return (
-      <div>
-        <h3>📝 버스킹 일정 등록</h3>
-  
-        <form onSubmit={handleSubmit} style={{ maxWidth: "400px", marginBottom: "20px" }}>
-          {/* 장소 선택 */}
-          <label>
-            장소 선택:
-            <select
-              name="locationId"
-              value={form.locationId}
-              onChange={handleLocationSelect}
-              required
-            >
-              <option value="">-- 장소 선택 --</option>
-              {locationOptions.map((loc) => (
-                <option key={loc.id} value={loc.id}>
-                  {loc.name}
-                </option>
-              ))}
-            </select>
-          </label>
-  
-          {/* 날짜 입력 */}
-          <input
-            type="date"
-            name="date"
-            value={form.date}
-            onChange={handleChange}
+  // ✅ 화면 렌더링
+  return (
+    <div>
+      <h3>📝 버스킹 일정 등록</h3>
+
+      <form onSubmit={handleSubmit} style={{ maxWidth: "400px", marginBottom: "20px" }}>
+        {/* 장소 선택 */}
+        <label>
+          장소 선택:
+          <select
+            name="locationId"
+            value={form.locationId}
+            onChange={handleLocationSelect}
             required
-          />
-  
-          {/* 시작 시간 입력 */}
-          <input
-            type="time"
-            name="startTime"
-            value={form.startTime}
-            onChange={handleChange}
-            required
-          />
-  
-          {/* 종료 시간 입력 */}
-          <input
-            type="time"
-            name="endTime"
-            value={form.endTime}
-            onChange={handleChange}
-            required
-          />
-  
-          {/* 공연 설명 */}
-          <textarea
-            name="description"
-            placeholder="공연 소개"
-            value={form.description}
-            onChange={handleChange}
-          />
-  
-          {/* 제출 버튼 */}
-          <button type="submit">등록</button>
-        </form>
-  
-        {/* 지도 컴포넌트 */}
-        <KakaoMap
-          selectedLocation={selectedLocation}             // 현재 선택된 장소
-          setSelectedLocation={setSelectedLocation}       // 지도에서 장소 선택 시 상태 반영
-          locationOptions={locationOptions}               // 장소 전체 목록
-          setLocationOptions={setLocationOptions}         // 장소 목록 업데이트 함수
+          >
+            <option value="">-- 장소 선택 --</option>
+            {locationOptions.map((loc) => (
+              <option key={loc.id} value={loc.id}>
+                {loc.name}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        {/* 날짜 입력 */}
+        <input
+          type="date"
+          name="date"
+          value={form.date}
+          onChange={handleChange}
+          required
         />
-      </div>
-    );
-  }
-  
-  export default BuskingManager; // 컴포넌트 외부로 내보내기
-  
+
+        {/* 시작 시간 입력 */}
+        <input
+          type="time"
+          name="startTime"
+          value={form.startTime}
+          onChange={handleChange}
+          required
+        />
+
+        {/* 종료 시간 입력 */}
+        <input
+          type="time"
+          name="endTime"
+          value={form.endTime}
+          onChange={handleChange}
+          required
+        />
+
+        {/* 공연 설명 */}
+        <textarea
+          name="description"
+          placeholder="공연 소개"
+          value={form.description}
+          onChange={handleChange}
+        />
+
+        {/* 제출 버튼 */}
+        <button type="submit">등록</button>
+      </form>
+
+      {/* 지도 컴포넌트 */}
+      <KakaoMap
+        selectedLocation={selectedLocation}             // 현재 선택된 장소
+        setSelectedLocation={setSelectedLocation}       // 지도에서 장소 선택 시 상태 반영
+        locationOptions={locationOptions}               // 장소 전체 목록
+        setLocationOptions={setLocationOptions}         // 장소 목록 업데이트 함수
+      />
+    </div>
+  );
+}
+
+export default BuskingManager; // 컴포넌트 외부로 내보내기

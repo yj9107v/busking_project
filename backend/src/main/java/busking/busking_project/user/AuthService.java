@@ -1,5 +1,7 @@
 package busking.busking_project.user;
 
+import busking.busking_project.user.dto.LoginResponseDto;
+import busking.busking_project.user.dto.RegisterRequestDto;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,7 +24,7 @@ public class AuthService {
     /**
      * ✅ 회원가입 처리 및 저장된 유저 반환
      */
-    public User register(RegisterRequest request) {
+    public User register(RegisterRequestDto request) {
         // 아이디 중복 검사
         if (userRepository.findByUsername(request.getUsername()).isPresent()) {
             throw new RuntimeException("USER_USERNAME_DUPLICATED"); // 에러코드로 구분 가능
@@ -130,7 +132,7 @@ public class AuthService {
     /**
      * ✅ 로그인 후 JWT 토큰(Access + Refresh) 반환
      */
-    public LoginResponse loginWithTokens(String username, String password, HttpServletRequest request) {
+    public LoginResponseDto loginWithTokens(String username, String password, HttpServletRequest request) {
         User user = userRepository.findByUsername(username)
                 .filter(u -> !u.isDeleted())
                 .orElseThrow(() -> new RuntimeException("USER_NOT_FOUND"));
@@ -160,6 +162,6 @@ public class AuthService {
         String refreshToken = JwtUtil.generateRefreshToken(user.getUsername());
 
         // 사용자 정보 + 토큰 반환
-        return new LoginResponse(accessToken, refreshToken, user);
+        return new LoginResponseDto(accessToken, refreshToken, user);
     }
 }

@@ -2,8 +2,10 @@ package busking.busking_project.promotion;
 
 import busking.busking_project.promotion.dto.PromotionPostRequest;
 import busking.busking_project.promotion.dto.PromotionPostResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -34,7 +36,14 @@ public class PromotionPostController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createPost(@RequestBody PromotionPostRequest request) {
+    public ResponseEntity<?> createPost(
+            @Valid @RequestBody PromotionPostRequest request,
+            BindingResult bindingResult
+    ) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+        }
+
         try {
             PromotionPostResponse created = promotionPostService.createPromotionPost(request);
             return ResponseEntity.created(URI.create("/api/promotions/" + created.getId())).body(created);
