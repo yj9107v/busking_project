@@ -1,0 +1,103 @@
+name: CI/CD - Backend & Frontend + Manual Deploy
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [develop]  # ✅ PR 대상 develop에서만 CI 실행
+
+  workflow_dispatch:  # ✅ CD는 수동으로만 실행 (main 브랜치 기준)
+
+jobs:
+  # ✅ 백엔드 CI
+  backend:
+    name: 🧪 Backend CI
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        working-directory: backend
+    env:
+      DEV_MYSQL_URL: ${{ secrets.DEV_MYSQL_URL }}
+      DEV_MYSQL_USERNAME: ${{ secrets.DEV_MYSQL_USERNAME }}
+      DEV_MYSQL_PASSWORD: ${{ secrets.DEV_MYSQL_PASSWORD }}
+      google_client_id: ${{ secrets.google_client_id }}
+      google_client_secret: ${{ secrets.google_client_secret }}
+      kakao_client_id: ${{ secrets.kakao_client_id }}
+
+    steps:
+      - name: ✅ 소스코드 체크아웃
+        uses: actions/checkout@v3
+
+      - name: ☕ Java 21 설정
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'microsoft'
+
+      - name: 🔧 Gradle 권한 부여
+        run: chmod +x ./gradlew
+
+      - name: 🏗️ Build 실행
+        run: ./gradlew build
+
+      - name: ✅ Test 실행
+        run: ./gradlew test
+
+  # ✅ 프론트엔드 CI
+  frontend:
+    name: 🎨 Frontend CI
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: ✅ 소스코드 체크아웃
+        uses: actions/checkout@v3
+
+      - name: 🟢 Node.js 18 설정
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: 📦 패키지 설치
+        run: npm ci
+
+      - name: ⚙️ 빌드 실행
+        run: npm run build
+
+  # ✅ CD: 수동 배포 (main 브랜치 기준)
+  deploy:
+    name: 🚀 Deploy to Elastic Beanstalk
+    if: github.ref == 'refs/heads/main'  # main 브랜치에서만 실행 가능
+    needs: [backend, frontend]  # CI 통과 후에만 실행
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ✅ 소스코드 체크아웃
+        uses: actions/checkout@v3
+
+      - name: 📦 프로젝트 zip 압축
+        run: |
+          zip -r deploy.zip . -x ".git/*" ".github/*" "README.md"
+
+      - name: 🛠️ AWS 인증 설정
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          region: ap-northeast-2
+
+      - name: 📤 S3 업로드 및 EB 배포
+        run: |
+          aws s3 cp deploy.zip s3://YOUR_BUCKET_NAME/deploy.zip
+
+          aws elasticbeanstalk create-application-version \
+            --application-name YOUR_APP_NAME \
+            --version-label "ver-${{ github.run_id }}" \
+            --source-bundle S3Bucket=YOUR_BUCKET_NAME,S3Key=deploy.zip
+
+          aws elasticbeanstalk update-environment \
+            --environment-name YOUR_ENV_NAME \
+            --version-label "ver-${{ github.run_id }}"
