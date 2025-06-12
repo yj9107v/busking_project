@@ -1,0 +1,66 @@
+name: CI - Backend & Frontend
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened] # ✅ PR이 열리거나 수정될 때 CI 실행
+    branches:
+      - develop
+
+jobs:
+  backend:
+    name: 🧪 Backend CI
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: backend
+
+    env:  # ✅ GitHub Secrets → Spring 환경 변수로 연결
+      DEV_MYSQL_URL: ${{ secrets.DEV_MYSQL_URL }}
+      DEV_MYSQL_USERNAME: ${{ secrets.DEV_MYSQL_USERNAME }}
+      DEV_MYSQL_PASSWORD: ${{ secrets.DEV_MYSQL_PASSWORD }}
+      google_client_id: ${{ secrets.google_client_id }}
+      google_client_secret: ${{ secrets.google_client_secret }}
+      kakao_client_id: ${{ secrets.kakao_client_id }}
+
+    steps:
+      - name: ✅ 소스코드 체크아웃
+        uses: actions/checkout@v3
+
+      - name: ☕ Java 21 설정
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'microsoft'
+
+      - name: 🔧 Gradle 권한 부여
+        run: chmod +x ./gradlew
+
+      - name: 🏗️ Build 실행
+        run: ./gradlew build
+
+      - name: ✅ Test 실행
+        run: ./gradlew test
+
+  frontend:
+    name: 🎨 Frontend CI
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: ✅ 소스코드 체크아웃
+        uses: actions/checkout@v3
+
+      - name: 🟢 Node.js 18 설정
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: 📦 패키지 설치
+        run: npm ci
+
+      - name: ⚙️ 빌드 실행
+        run: npm run build
