@@ -38,10 +38,10 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: 🏗️ Build 실행
-        run: ./gradlew build -x test
+        run: ./gradlew build
 
-      #- name: ✅ Test 실행
-      #  run: ./gradlew test
+      - name: ✅ Test 실행
+        run: ./gradlew test
 
   # ✅ 프론트엔드 CI
   frontend:
@@ -69,29 +69,35 @@ jobs:
 
   # ✅ CD: 수동 배포 (main 브랜치 기준)
   deploy:
-    name: 🚀 Deploy to Elastic Beanstalk (Test Mode)
-    if: github.ref == 'refs/heads/main'
-    needs: [backend, frontend]
+    name: 🚀 Deploy to Elastic Beanstalk
+    if: github.ref == 'refs/heads/main'  # main 브랜치에서만 실행 가능
+    needs: [backend, frontend]  # CI 통과 후에만 실행
     runs-on: ubuntu-latest
 
     steps:
       - name: ✅ 소스코드 체크아웃
         uses: actions/checkout@v3
 
-      - name: 📦 프로젝트 zip 압축 (테스트용)
+      - name: 📦 프로젝트 zip 압축
         run: |
-          echo "✅ zip 압축 테스트 실행 중..."
           zip -r deploy.zip . -x ".git/*" ".github/*" "README.md"
 
-      - name: 🛠️ AWS 인증 설정 (테스트용)
-        run: |
-          echo "✅ AWS 인증 테스트 실행 중..."
-          echo "    Access Key ID: [MASKED]"
-          echo "    Region: ap-northeast-2"
+      - name: 🛠️ AWS 인증 설정
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          region: ap-northeast-2
 
-      - name: 📤 S3 업로드 및 EB 배포 (테스트용)
+      - name: 📤 S3 업로드 및 EB 배포
         run: |
-          echo "📤 S3로 deploy.zip 업로드 (테스트용)"
-          echo "EB 버전 생성: ver-${{ github.run_id }}"
-          echo "EB 환경 업데이트 시작 (환경 이름: YOUR_ENV_NAME)"
-          echo "🎉 테스트용 CD 파이프라인 실행 완료!"
+          aws s3 cp deploy.zip s3://YOUR_BUCKET_NAME/deploy.zip
+
+          aws elasticbeanstalk create-application-version \
+            --application-name YOUR_APP_NAME \
+            --version-label "ver-${{ github.run_id }}" \
+            --source-bundle S3Bucket=YOUR_BUCKET_NAME,S3Key=deploy.zip
+
+          aws elasticbeanstalk update-environment \
+            --environment-name YOUR_ENV_NAME \
+            --version-label "ver-${{ github.run_id }}"
