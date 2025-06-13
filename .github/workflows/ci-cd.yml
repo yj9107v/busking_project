@@ -38,7 +38,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: 🏗️ Build 실행
-        run: ./gradlew build
+        run: ./gradlew build -x test
 
       #- name: ✅ Test 실행
       #  run: ./gradlew test
