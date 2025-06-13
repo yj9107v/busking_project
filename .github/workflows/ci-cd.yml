@@ -40,8 +40,8 @@ jobs:
       - name: 🏗️ Build 실행
         run: ./gradlew build
 
-      - name: ✅ Test 실행
-        run: ./gradlew test
+      #- name: ✅ Test 실행
+      #  run: ./gradlew test
 
   # ✅ 프론트엔드 CI
   frontend:
