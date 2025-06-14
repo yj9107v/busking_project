@@ -23,6 +23,7 @@ jobs:
       google_client_id: ${{ secrets.google_client_id }}
       google_client_secret: ${{ secrets.google_client_secret }}
       kakao_client_id: ${{ secrets.kakao_client_id }}
+      SPRING_PROFILES_ACTIVE: test
 
     steps:
       - name: ✅ 소스코드 체크아웃
