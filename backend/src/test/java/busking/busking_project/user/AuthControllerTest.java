@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-public class AuthControllerTest {
+public class AuthControllerTest { // 회원가입, 로그인 테스트코드
 
     @Autowired
     private MockMvc mockMvc;
