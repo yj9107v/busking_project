@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Commit;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -16,8 +18,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
+@ActiveProfiles("test")
 @AutoConfigureMockMvc
-public class AuthControllerTest {
+public class AuthControllerTest { // 회원가입, 로그인 테스트코드
 
     @Autowired
     private MockMvc mockMvc;
@@ -26,6 +29,7 @@ public class AuthControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
+    @Commit
     void 회원가입_후_로그인_성공() throws Exception {
         // ✅ 유효성 조건을 충족하는 회원가입 요청
         RegisterRequestDto request = new RegisterRequestDto();
@@ -40,6 +44,7 @@ public class AuthControllerTest {
                         .content(objectMapper.writeValueAsString(request)))
                 .andDo(print())
                 .andExpect(status().isOk());
+
 
         // 로그인 요청
         String loginJson = """

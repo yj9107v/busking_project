@@ -107,7 +107,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/users/register").permitAll()
 
                         // 🔓 모든 사용자 API 허용 (인증 없이도 /me 등 호출 가능)
-                        .requestMatchers("/api/users/**").permitAll()
+                        .requestMatchers("/api/users/**", "/api/auth/**").permitAll()
 
                         // 🔓 preflight 요청 허용 (OPTIONS 요청)
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()

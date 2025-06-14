@@ -41,6 +41,8 @@ dependencies {
 
 	// 테스트
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	// 테스트용 DB H2 의존성 추가
+	testImplementation 'com.h2database:h2'
 }
 
 springBoot {
