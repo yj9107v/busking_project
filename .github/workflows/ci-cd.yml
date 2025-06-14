@@ -41,7 +41,7 @@ jobs:
         run: ./gradlew build
 
       - name: ✅ Test 실행
-        run: ./gradlew test -Dspring.profiles.active=test
+        run: ./gradlew test
 
   # ✅ 프론트엔드 CI
   frontend:
