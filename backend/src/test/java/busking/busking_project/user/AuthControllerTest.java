@@ -1,6 +1,7 @@
 
 package busking.busking_project.user;
 
+import busking.busking_project.SecurityConfig;
 import busking.busking_project.user.dto.RegisterRequestDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@SpringBootTest(classes = {SecurityConfig.class})
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
 public class AuthControllerTest { // 회원가입, 로그인 테스트코드
