@@ -41,3 +41,9 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
+
+# 인증 필요
+jwt:
+  secret: test-jwt-secret-key
+  access-token-expiration: 3600000       # 1시간
+  refresh-token-expiration: 604800000    # 7일
