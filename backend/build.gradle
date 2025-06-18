@@ -39,8 +39,12 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
+	runtimeOnly   'com.mysql:mysql-connector-j'   // 운영·개발용
 	// 테스트
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// ✅ CI / 단위테스트 전용 H2
+	testRuntimeOnly 'com.h2database:h2'
 }
 
 springBoot {

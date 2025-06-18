@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:busking_test;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create       # 필요시 update → create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+    open-in-view: false
+  sql:
+    init:
+      mode: always           # schema.sql/data.sql 을 자동 실행할 때 사용
+logging:
+  level:
+    org.hibernate.SQL: debug
