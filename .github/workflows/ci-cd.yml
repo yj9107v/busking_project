@@ -16,14 +16,7 @@ jobs:
     defaults:
       run:
         working-directory: backend
-    env:
-      DEV_MYSQL_URL: ${{ secrets.DEV_MYSQL_URL }}
-      DEV_MYSQL_USERNAME: ${{ secrets.DEV_MYSQL_USERNAME }}
-      DEV_MYSQL_PASSWORD: ${{ secrets.DEV_MYSQL_PASSWORD }}
-      google_client_id: ${{ secrets.google_client_id }}
-      google_client_secret: ${{ secrets.google_client_secret }}
-      kakao_client_id: ${{ secrets.kakao_client_id }}
-
+  
     steps:
       - name: ✅ 소스코드 체크아웃
         uses: actions/checkout@v3
@@ -42,6 +35,11 @@ jobs:
 
       - name: ✅ Test 실행
         run: ./gradlew test
+
+      - name: Run tests with H2 profile
+        env:
+          SPRING_PROFILES_ACTIVE: test     # <-- 핵심
+        run: ./gradlew clean test
 
   # ✅ 프론트엔드 CI
   frontend:
