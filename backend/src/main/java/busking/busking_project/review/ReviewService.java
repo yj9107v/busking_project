@@ -90,6 +90,17 @@ public class ReviewService {
     }
 
     /**
+     * ✅ 게시글에 대한 평균 별점 반환 (소수점 1자리 반올림)
+     */
+    public double getAverageRating(Long postId) {
+        Double avg = reviewRepository.findAverageRatingByPostId(postId);
+        if (avg == null) {
+            return 0.0;
+        }
+        return Math.round(avg * 10.0) / 10.0;
+    }
+
+    /**
      * ✅ 사용자 ID 찾기 (로컬 로그인용)
      */
     public Long findUserIdByUsername(String username) {

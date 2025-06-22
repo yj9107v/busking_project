@@ -73,4 +73,10 @@ public class ReviewController {
 
         throw new IllegalStateException("알 수 없는 인증 유형입니다.");
     }
+
+    @GetMapping("/post/{postId}/average")
+    public ResponseEntity<Double> getAverageRating(@PathVariable Long postId) {
+        double avgRating = reviewService.getAverageRating(postId);
+        return ResponseEntity.ok(avgRating);
+    }
 }
