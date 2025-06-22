@@ -44,7 +44,11 @@ public class PromotionPostService {
                 .isDeleted(false)
                 .build();
 
-        return new PromotionPostResponse(promotionPostRepository.save(post));
+        PromotionPost saved = promotionPostRepository.save(post);
+
+        System.out.println("✅ 생성된 ID = " + saved.getId()); // 디버깅 로그
+
+        return new PromotionPostResponse(saved);
     }
 
     @Transactional

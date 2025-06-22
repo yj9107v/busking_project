@@ -26,7 +26,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
-
 	// ✅ MySQL 드라이버 - 올바른 명칭
 	implementation 'mysql:mysql-connector-java:8.0.32'
 
@@ -38,13 +37,17 @@ dependencies {
 	// Lombok
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
-
+	testCompileOnly "org.projectlombok:lombok"
+	testAnnotationProcessor "org.projectlombok:lombok"
 	runtimeOnly   'com.mysql:mysql-connector-j'   // 운영·개발용
 	// 테스트
+	testImplementation "org.springframework.security:spring-security-test"
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	// ✅ CI / 단위테스트 전용 H2
 	testRuntimeOnly 'com.h2database:h2'
+
+	testImplementation 'org.assertj:assertj-core:3.24.2' // 또는 최신 버전
 }
 
 springBoot {

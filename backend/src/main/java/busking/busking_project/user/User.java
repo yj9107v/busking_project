@@ -45,6 +45,7 @@ public class User {
     @Column
     private LocalDateTime updatedAt; // 마지막 수정 시간
 
+    @Builder.Default
     @Column(nullable = false)
     private boolean isDeleted = false; // 계정 삭제 여부 (기본값 false)
 

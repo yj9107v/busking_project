@@ -32,6 +32,7 @@ public class Review {
     @Column(nullable = false)
     private int rating;
 
+    @Builder.Default
     @Column(nullable = false)
     private boolean isDeleted = false;
 

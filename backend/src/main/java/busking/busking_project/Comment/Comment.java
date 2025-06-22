@@ -29,5 +29,6 @@ public class Comment extends BaseEntity {
 
     private Long parentId;
 
+    @Builder.Default
     private Boolean isDeleted = false;
 }
