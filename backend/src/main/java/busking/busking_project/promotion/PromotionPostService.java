@@ -75,7 +75,7 @@ public class PromotionPostService {
     @Transactional
     public void deletePromotionPost(Long id) {
         PromotionPost post = promotionPostRepository.findByIdAndIsDeletedFalse(id)
-                .orElseThrow(() -> new NoSuchElementException("삭제할 게시글이 없습니다."));
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 게시글입니다."));
         post.setIsDeleted(true);
         promotionPostRepository.save(post);
     }

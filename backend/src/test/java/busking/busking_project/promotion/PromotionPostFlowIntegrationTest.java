@@ -50,29 +50,59 @@ class PromotionPostFlowIntegrationTest {
                 .getResponse()
                 .getHeader("Location");
 
-        assertThat(location).isNotNull();  // ✅ 명시적 검증 추가
+        assertThat(location).isNotNull();
         assertThat(location).contains("/api/promotions/");
-        System.out.println("✅ 생성된 ID = " + savedId); // 확인 로그
         savedId = Long.parseLong(location.substring(location.lastIndexOf("/") + 1));
+        System.out.println("✅ 생성된 ID = " + savedId);
     }
 
     @Test
     @Order(2)
     @WithMockUser
-    @DisplayName("2️⃣ GET /api/promotions/{id} - 게시글 조회")
-    void getPost() throws Exception {
-        mockMvc.perform(get("/api/promotions/{id}", savedId))
+    @DisplayName("2️⃣ PUT /api/promotions/{id} - 게시글 수정")
+    void updatePost() throws Exception {
+        PromotionPostRequest updateRequest = PromotionPostRequest.builder()
+                .title("수정된 제목입니다")
+                .content("수정된 내용입니다")
+                .category("TALK")
+                .place("홍대")
+                .mediaUrl("https://test.com/image.jpg")
+                .build();
+
+        String json = objectMapper.writeValueAsString(updateRequest);
+
+        mockMvc.perform(put("/api/promotions/{id}", savedId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(savedId));
+                .andExpect(jsonPath("$.title").value("수정된 제목입니다"));
     }
 
     @Test
     @Order(3)
     @WithMockUser
-    @DisplayName("3️⃣ DELETE /api/promotions/{id} - 게시글 삭제")
+    @DisplayName("3️⃣ GET /api/promotions/{id} - 수정된 게시글 조회")
+    void getUpdatedPost() throws Exception {
+        mockMvc.perform(get("/api/promotions/{id}", savedId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title").value("수정된 제목입니다"));
+    }
+
+    @Test
+    @Order(4)
+    @WithMockUser
+    @DisplayName("4️⃣ DELETE /api/promotions/{id} - 게시글 삭제")
     void deletePost() throws Exception {
-        // Soft delete 테스트가 없는 상태라면 생략하거나 추후 구현
-        // mockMvc.perform(delete("/api/promotions/{id}", savedId))
-        //         .andExpect(status().isNoContent());
+        mockMvc.perform(delete("/api/promotions/{id}", savedId))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    @Order(5)
+    @WithMockUser
+    @DisplayName("5️⃣ GET /api/promotions/{id} - 삭제된 게시글 조회 실패")
+    void getDeletedPost_shouldFail() throws Exception {
+        mockMvc.perform(get("/api/promotions/{id}", savedId))
+                .andExpect(status().isNotFound());
     }
 }
