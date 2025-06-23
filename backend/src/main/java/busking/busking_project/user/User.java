@@ -1,9 +1,16 @@
 package busking.busking_project.user;
 
+import busking.busking_project.promotion.PromotionPost;
+import busking.busking_project.review.Review;
+import busking.busking_project.board.BoardPost;
+import busking.busking_project.comment.Comment;
+import busking.busking_project.Busking_Schedule.BuskingSchedule;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity // JPA 엔티티임을 명시
 @Table(name = "users") // DB 테이블 이름을 "users"로 지정
@@ -13,58 +20,75 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class User {
-    // 사용자 정보를 저장하는 JPA 엔티티 클래스
-
-    @Id // 기본 키 설정
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 전략 (MySQL 기준 AUTO_INCREMENT)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 20) // Not null + 유일값 제약 + 길이 제한
-    private String username; // 로그인용 ID
+    @Column(nullable = false, unique = true, length = 20)
+    private String username;
 
-    @Column(length = 255) // 비밀번호 (암호화된 값 저장을 위한 길이 설정)
+    @Column(length = 255)
     private String password;
 
     @Column(nullable = false, unique = true, length = 100)
-    private String email; // 사용자 이메일
+    private String email;
 
     @Column(nullable = false, unique = true, length = 30)
-    private String nickname; // 사용자 닉네임
+    private String nickname;
 
-    @Enumerated(EnumType.STRING) // Enum을 문자열로 저장
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private AuthProvider provider; // 로그인 제공자 (GOOGLE, KAKAO, LOCAL)
+    private AuthProvider provider;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10)
-    private Role role; // 사용자 역할 (USER), Admin은 mysql에서 따로 설정할 것!
+    private Role role;
 
     @Column(nullable = false)
-    private LocalDateTime createdAt; // 계정 생성 시간
+    private LocalDateTime createdAt;
 
     @Column
-    private LocalDateTime updatedAt; // 마지막 수정 시간
+    private LocalDateTime updatedAt;
 
     @Builder.Default
     @Column(nullable = false)
-    private boolean isDeleted = false; // 계정 삭제 여부 (기본값 false)
+    private boolean isDeleted = false;
 
-    private LocalDateTime deletedAt; // 삭제된 경우 시간 기록
+    private LocalDateTime deletedAt;
 
     @Column(name = "social_id", unique = true)
-    private String socialId; // 소셜 로그인 사용자의 고유 ID
+    private String socialId;
 
-    // 엔티티 저장 전 자동 실행되는 메서드
+    // ✅ 양방향 연관관계 추가
+
+    // 1:N : User -> PromotionPost
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PromotionPost> promotionPosts = new ArrayList<>();
+
+    // 1:N : User -> Review
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews = new ArrayList<>();
+
+    // 1:N : User -> BoardPost
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BoardPost> boardPosts = new ArrayList<>();
+
+    // 1:N : User -> Comment
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
+
+    // 1:N : User -> BuskingSchedule
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BuskingSchedule> buskingSchedules = new ArrayList<>();
+
     @PrePersist
     public void onCreate() {
-        this.createdAt = LocalDateTime.now(); // 생성 시간 설정
-        this.updatedAt = LocalDateTime.now(); // 최초 생성 시 수정 시간도 함께 설정
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
-    // 엔티티 업데이트 전 자동 실행되는 메서드
     @PreUpdate
     public void onUpdate() {
-        this.updatedAt = LocalDateTime.now(); // 수정 시간 갱신
+        this.updatedAt = LocalDateTime.now();
     }
 }
-

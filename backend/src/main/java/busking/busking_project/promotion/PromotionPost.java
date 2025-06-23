@@ -1,8 +1,13 @@
 package busking.busking_project.promotion;
 
 import busking.busking_project.base.BaseEntity;
+import busking.busking_project.user.User;
+import busking.busking_project.review.Review;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,8 +25,9 @@ public class PromotionPost extends BaseEntity {
     @Column(nullable = false, unique = true, length = 36)
     private String uuid;
 
-    @Column(nullable = false)
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User userId; // 작성자
 
     @Column(nullable = false, length = 100)
     private String title;
@@ -44,11 +50,14 @@ public class PromotionPost extends BaseEntity {
     @Builder.Default
     private Boolean isDeleted = false;
 
-    // ✅ 장소 필드 추가
     @Column(nullable = false, length = 255)
     private String place;
 
     public enum Category {
         ART, DANCE, MUSIC, TALK
     }
+
+    // ✅ Review와의 양방향 연관관계 (1:N)
+    @OneToMany(mappedBy = "promotionPostId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews = new ArrayList<>();
 }

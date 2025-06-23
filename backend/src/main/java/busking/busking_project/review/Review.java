@@ -1,8 +1,9 @@
 package busking.busking_project.review;
 
+import busking.busking_project.promotion.PromotionPost;
+import busking.busking_project.user.User;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Table(name = "review", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"postId", "userId"})
+        @UniqueConstraint(columnNames = {"promotion_post_id", "user_id"})
 })
 public class Review {
 
@@ -20,11 +21,15 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Long postId;
+    // 작성자(유저)와 N:1 관계
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User userId;
 
-    @Column(nullable = false)
-    private Long userId;
+    // 홍보글(프로모션)과 N:1 관계
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "promotion_post_id", nullable = false)
+    private PromotionPost postId;
 
     @Column(nullable = false, length = 500)
     private String comment;
@@ -39,47 +44,18 @@ public class Review {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(nullable = true)
+    @Column
     private LocalDateTime updatedAt;
 
-    // ✅ @PrePersist로 createdAt 자동 설정
+    // 생성/수정 자동 관리
     @PrePersist
     protected void onCreate() {
-        if (this.createdAt == null) {
-            this.createdAt = LocalDateTime.now();
-        }
-    }
-
-    // ✅ 리뷰 복구 메소드 추가
-    public void restore(String comment, int rating) {
-        this.isDeleted = false;
-        this.comment = comment;
-        this.rating = rating;
+        this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
 
-    // ✅ 리뷰 수정 메소드 추가
-    public void update(String comment, int rating) {
-        this.comment = comment;
-        this.rating = rating;
+    @PreUpdate
+    protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
-    }
-
-    // ✅ 리뷰 삭제 메소드 추가
-    public void softDelete() {
-        this.isDeleted = true;
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    // ✅ Builder 패턴 생성자 추가
-    @Builder
-    public Review(Long postId, Long userId, String comment, int rating, boolean isDeleted) {
-        this.postId = postId;
-        this.userId = userId;
-        this.comment = comment;
-        this.rating = rating;
-        this.isDeleted = isDeleted;
-        this.createdAt = LocalDateTime.now();  // 기본값 설정
     }
 }
-

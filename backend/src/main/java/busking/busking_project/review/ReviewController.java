@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 리뷰 관련 REST API 컨트롤러
+ */
 @RestController
 @RequestMapping("/api/reviews")
 @RequiredArgsConstructor
@@ -20,18 +23,28 @@ public class ReviewController {
     private final ReviewService reviewService;
     private final UserRepository userRepository;
 
+    /**
+     * 특정 홍보글(postId)에 대한 모든 리뷰 조회
+     */
     @GetMapping("/post/{postId}")
     public ResponseEntity<List<ReviewResponseDto>> getReviewsByPost(@PathVariable Long postId) {
         List<ReviewResponseDto> reviews = reviewService.getReviewsByPost(postId);
         return ResponseEntity.ok(reviews);
     }
 
+    /**
+     * 리뷰 단건 조회
+     */
     @GetMapping("/{id}")
     public ResponseEntity<ReviewResponseDto> getReviewById(@PathVariable Long id) {
         ReviewResponseDto review = reviewService.getReviewById(id);
         return ResponseEntity.ok(review);
     }
 
+    /**
+     * 리뷰 삭제
+     * - 인증 정보(Authentication)에서 userId 추출하여, 본인/관리자만 삭제 가능하도록 위임
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteReview(@PathVariable Long id, Authentication auth) {
         try {
@@ -47,12 +60,16 @@ public class ReviewController {
         }
     }
 
+    /**
+     * 인증(Authentication) 객체에서 실제 사용자 userId 추출
+     * - OAuth2 로그인/로컬 로그인 모두 지원
+     */
     private Long extractUserId(Authentication auth) {
         if (auth == null || !auth.isAuthenticated()) {
             throw new IllegalStateException("로그인된 사용자가 아닙니다.");
         }
 
-        // OAuth2 로그인
+        // OAuth2 로그인 사용자 (소셜)
         if (auth.getPrincipal() instanceof DefaultOAuth2User oAuth2User) {
             Map<String, Object> attributes = oAuth2User.getAttributes();
             Object userId = attributes.get("userId");
@@ -63,7 +80,7 @@ public class ReviewController {
             }
         }
 
-        // 로컬 로그인
+        // 로컬 로그인 사용자
         if (auth.getPrincipal() instanceof org.springframework.security.core.userdetails.User user) {
             String username = user.getUsername();
             return userRepository.findByUsername(username)

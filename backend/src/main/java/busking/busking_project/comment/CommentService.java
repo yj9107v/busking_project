@@ -1,7 +1,7 @@
-package busking.busking_project.Comment;
+package busking.busking_project.comment;
 
-import busking.busking_project.Comment.dto.CommentRequestDto;
-import busking.busking_project.Comment.dto.CommentResponseDto;
+import busking.busking_project.comment.dto.CommentRequestDto;
+import busking.busking_project.comment.dto.CommentResponseDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

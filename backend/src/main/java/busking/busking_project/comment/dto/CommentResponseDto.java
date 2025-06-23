@@ -1,6 +1,6 @@
-package busking.busking_project.Comment.dto;
+package busking.busking_project.comment.dto;
 
-import busking.busking_project.Comment.Comment;
+import busking.busking_project.comment.Comment;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

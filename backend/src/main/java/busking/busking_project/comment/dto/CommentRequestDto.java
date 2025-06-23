@@ -1,4 +1,4 @@
-package busking.busking_project.Comment.dto;
+package busking.busking_project.comment.dto;
 
 import lombok.Getter;
 import lombok.Setter;

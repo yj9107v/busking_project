@@ -1,4 +1,4 @@
-package busking.busking_project.Comment;
+package busking.busking_project.comment;
 
 import busking.busking_project.base.BaseEntity;
 import jakarta.persistence.*;
