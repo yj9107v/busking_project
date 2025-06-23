@@ -45,11 +45,11 @@ class RegisterRequestDtoValidationTest {
 
     // --- 헬퍼: 항상 통과하는 기본 DTO ---
     private RegisterRequestDto valid() {
-        return new RegisterRequestDto(
-                "user01",
-                "Pa$$word1!",
-                "user01@example.com",
-                "닉네임"
-        );
+        return RegisterRequestDto.builder()
+                .username("user01")
+                .password("Pa$$word1!")
+                .email("user01@example.com")
+                .nickname("닉네임")
+                .build();
     }
 }

@@ -37,9 +37,11 @@ public class PromotionPost extends BaseEntity {
     @Column(nullable = false)
     private Category category;
 
+    @Builder.Default
     @Column(nullable = false)
     private Integer viewCount = 0;
 
+    @Builder.Default
     private Boolean isDeleted = false;
 
     // ✅ 장소 필드 추가

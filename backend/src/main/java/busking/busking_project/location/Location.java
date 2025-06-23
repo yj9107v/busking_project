@@ -31,6 +31,7 @@ public class Location {
     @Column(columnDefinition = "TEXT")
     private String description; // 장소 설명
 
+    @Builder.Default
     @Column(name = "is_active", nullable = false)
     private boolean isActive = true; // 장소 사용 여부 (기본 true)
 }

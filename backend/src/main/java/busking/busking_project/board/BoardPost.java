@@ -30,8 +30,10 @@ public class BoardPost extends BaseEntity {
     @Column(nullable = false)
     private String content;
 
+    @Builder.Default
     @Column(nullable = false)
     private Integer viewCount = 0;
 
+    @Builder.Default
     private Boolean isDeleted = false;
 }

@@ -61,8 +61,13 @@ class AuthServiceTest {
         @DisplayName("✅ 중복이 없으면 회원가입이 되고 암호가 인코딩된다")
         void register_success() {
             // Given
-            RegisterRequestDto req = new RegisterRequestDto(
-                    "user02", "Pa$$1!", "user02@example.com", "닉2");
+            RegisterRequestDto req = RegisterRequestDto.builder()
+                    .username("user02")
+                    .password("Pa$$1!")
+                    .email("user02@example.com")
+                    .nickname("닉2")
+                    .build();
+
             when(userRepository.findByUsername("user02")).thenReturn(Optional.empty());
             when(userRepository.findByEmail("user02@example.com")).thenReturn(Optional.empty());
             when(userRepository.findByNickname("닉2")).thenReturn(Optional.empty());
@@ -87,8 +92,12 @@ class AuthServiceTest {
         @DisplayName("❌ username 이 이미 있으면 예외를 던진다")
         void register_duplicateUsername_fail() {
             // Given
-            RegisterRequestDto req = new RegisterRequestDto(
-                    "user01", "x", "x@mail.com", "x");
+            RegisterRequestDto req = RegisterRequestDto.builder()
+                    .username("user01")
+                    .password("x")
+                    .email("x@mail.com")
+                    .nickname("x")
+                    .build();
 
             when(userRepository.findByUsername("user01")).thenReturn(Optional.of(existingUser));
 
