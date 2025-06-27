@@ -21,7 +21,9 @@ public class BuskingController {
 
     private final BuskingService buskingService;
 
-    // ✅ 1. 일정 등록
+    /**
+     * 일정 등록
+     */
     @PostMapping
     public ResponseEntity<?> createBusking(@RequestBody BuskingCreateRequest request) {
         try {
@@ -36,14 +38,18 @@ public class BuskingController {
         }
     }
 
-    // ✅ 2. uuid로 단건 조회
+    /**
+     * uuid로 단건 조회
+     */
     @GetMapping("/{uuid}")
     public ResponseEntity<BuskingResponse> getBuskingByUuid(@PathVariable String uuid) {
         BuskingResponse response = buskingService.getByUuid(uuid);
         return ResponseEntity.ok(response);
     }
 
-    // ✅ 3. 날짜로 조회
+    /**
+     * 날짜로 전체 일정 조회
+     */
     @GetMapping("/date")
     public ResponseEntity<List<BuskingResponse>> getBuskingsByDate(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
@@ -51,14 +57,12 @@ public class BuskingController {
         return ResponseEntity.ok(responses);
     }
 
-
-
-    private final BuskingService buskingScheduleService;
-
+    /**
+     * 모든 장소 + 일정 정보 반환 (지도/목록용)
+     */
     @GetMapping("/locations")
     public ResponseEntity<List<LocationWithScheduleDto>> getLocationsWithSchedules() {
-        List<LocationWithScheduleDto> schedules = buskingScheduleService.findAllWithLocationInfo();
+        List<LocationWithScheduleDto> schedules = buskingService.findAllWithLocationInfo();
         return ResponseEntity.ok(schedules);
     }
-
 }

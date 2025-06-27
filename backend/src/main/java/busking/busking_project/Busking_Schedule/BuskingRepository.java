@@ -12,16 +12,17 @@ import java.util.Optional;
 
 public interface BuskingRepository extends JpaRepository<BuskingSchedule, Long> {
 
-    // ✅ uuid로 단건 조회
-    Optional<BuskingSchedule> findByUuid(String uuid);
+    // ✅ Soft Delete 적용 버전 추가
+    Optional<BuskingSchedule> findByUuidAndIsDeletedFalse(String uuid);
 
-    // ✅ 날짜로 전체 리스트 조회
-    List<BuskingSchedule> findByDate(LocalDate date);
+    List<BuskingSchedule> findByDateAndIsDeletedFalse(LocalDate date);
 
-    // ✅ 특정 유저의 일정 조회
-    List<BuskingSchedule> findByUser_Id(Long userId); // ManyToOne 연관 필드로 수정됨
+    List<BuskingSchedule> findByUser_IdAndIsDeletedFalse(Long userId);
 
-    // ✅ 날짜 + 장소 기준 중복 방지
+    // (기존) uuid, 날짜, 유저로도 조회 가능
+    Optional<BuskingSchedule> findByUuid(String uuid); // 이 경우도 isDeleted false로 조회 권장
+
+    // ✅ 시간 겹침 중복 체크 (isDeleted false 이미 적용)
     @Query("""
         SELECT COUNT(s) > 0 FROM BuskingSchedule s
         WHERE s.location.id = :locationId
@@ -36,11 +37,12 @@ public interface BuskingRepository extends JpaRepository<BuskingSchedule, Long> 
                                                   @Param("startTime") LocalTime startTime,
                                                   @Param("endTime") LocalTime endTime);
 
-    // ✅ 모든 일정 + 장소 정보 반환
+    // ✅ 모든 일정+장소 DTO (추가 필드 필요시 DTO/JPQL 쿼리 수정)
     @Query("""
         SELECT new busking.busking_project.Busking_Schedule.dto.LocationWithScheduleDto(
-            l.id, l.name, l.latitude, l.longitude, l.description,
-            s.date, s.startTime, s.endTime
+            l.id, l.name, l.latitude, l.longitude,
+            s.date, s.startTime, s.endTime, s.description,
+            s.status, s.isDeleted, s.uuid
         )
         FROM BuskingSchedule s
         JOIN s.location l

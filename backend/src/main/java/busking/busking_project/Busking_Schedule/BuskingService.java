@@ -32,13 +32,10 @@ public class BuskingService {
         if (isTimeOverlap(request.getLocationId(), request.getDate(), request.getStartTime(), request.getEndTime())) {
             throw new IllegalArgumentException("해당 시간에 이미 예약된 공연이 존재합니다.");
         }
-
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new RuntimeException("사용자 정보를 찾을 수 없습니다."));
-
         Location location = locationRepository.findById(request.getLocationId())
                 .orElseThrow(() -> new RuntimeException("장소 정보를 찾을 수 없습니다."));
-
         BuskingSchedule busking = BuskingSchedule.builder()
                 .uuid(UUID.randomUUID().toString())
                 .user(user)
@@ -50,69 +47,51 @@ public class BuskingService {
                 .status(BuskingStatus.SCHEDULED)
                 .isDeleted(false)
                 .build();
-
         buskingRepository.save(busking);
-
-        return BuskingResponse.builder()
-                .uuid(busking.getUuid())
-                .userId(busking.getUser().getId())
-                .locationId(busking.getLocation().getId())
-                .date(busking.getDate())
-                .startTime(busking.getStartTime())
-                .endTime(busking.getEndTime())
-                .description(busking.getDescription())
-                .status(busking.getStatus().name())
-                .build();
+        return new BuskingResponse(busking); // DTO 변환 생성자 사용 추천
     }
 
-    // ✅ 2. uuid로 단건 조회
+    // ✅ 2. uuid로 단건 조회 (Soft Delete 반영)
     public BuskingResponse getByUuid(String uuid) {
-        BuskingSchedule busking = buskingRepository.findByUuid(uuid)
+        BuskingSchedule busking = buskingRepository.findByUuidAndIsDeletedFalse(uuid)
                 .orElseThrow(() -> new RuntimeException("해당 일정이 존재하지 않습니다."));
-
-        return BuskingResponse.builder()
-                .uuid(busking.getUuid())
-                .userId(busking.getUser().getId())
-                .locationId(busking.getLocation().getId())
-                .date(busking.getDate())
-                .startTime(busking.getStartTime())
-                .endTime(busking.getEndTime())
-                .description(busking.getDescription())
-                .status(busking.getStatus().name())
-                .build();
+        return new BuskingResponse(busking);
     }
 
-    // ✅ 3. 날짜 기준 조회
+    // ✅ 3. 날짜 기준 조회 (Soft Delete 반영)
     public List<BuskingResponse> getByDate(LocalDate date) {
-        return buskingRepository.findByDate(date).stream()
-                .map(busking -> BuskingResponse.builder()
-                        .uuid(busking.getUuid())
-                        .userId(busking.getUser().getId())
-                        .locationId(busking.getLocation().getId())
-                        .date(busking.getDate())
-                        .startTime(busking.getStartTime())
-                        .endTime(busking.getEndTime())
-                        .description(busking.getDescription())
-                        .status(busking.getStatus().name())
-                        .build())
+        return buskingRepository.findByDateAndIsDeletedFalse(date).stream()
+                .map(BuskingResponse::new)
                 .collect(Collectors.toList());
     }
 
+    // ✅ 4. 시간 겹침 중복 체크
     public boolean isTimeOverlap(Long locationId, LocalDate date, LocalTime start, LocalTime end) {
         return buskingRepository.existsByLocationAndDateAndTimeOverlap(locationId, date, start, end);
     }
 
-    // ✅ 4. 매 1분마다 상태 업데이트 (테스트용)
+    // ✅ 5. 일정 논리 삭제(Soft Delete)
+    @Transactional
+    public void deleteBusking(String uuid) {
+        BuskingSchedule busking = buskingRepository.findByUuidAndIsDeletedFalse(uuid)
+                .orElseThrow(() -> new RuntimeException("해당 일정이 존재하지 않습니다."));
+        busking.setDeleted(true);
+        busking.setUpdatedAt(LocalDateTime.now());
+        buskingRepository.save(busking);
+    }
+
+    // ✅ 6. 매 1분마다 상태 자동 업데이트 (Soft Delete 제외)
     @Scheduled(cron = "0 * * * * *") // 매 1분마다
     @Transactional
     public void updateStatusAutomatically() {
         LocalDateTime now = LocalDateTime.now();
-
-        List<BuskingSchedule> schedules = buskingRepository.findAll();
+        List<BuskingSchedule> schedules = buskingRepository.findAll()
+                .stream()
+                .filter(b -> !b.isDeleted())
+                .collect(Collectors.toList());
         for (BuskingSchedule busking : schedules) {
             LocalDateTime start = LocalDateTime.of(busking.getDate(), busking.getStartTime());
             LocalDateTime end = LocalDateTime.of(busking.getDate(), busking.getEndTime());
-
             if (now.isBefore(start)) {
                 busking.setStatus(BuskingStatus.SCHEDULED);
             } else if (now.isAfter(end)) {
@@ -123,6 +102,7 @@ public class BuskingService {
         }
     }
 
+    // ✅ 7. 장소 + 일정 정보 리스트 반환
     public List<LocationWithScheduleDto> findAllWithLocationInfo() {
         return buskingRepository.findAllWithLocationInfo();
     }

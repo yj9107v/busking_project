@@ -17,22 +17,29 @@ public class LocationController {
 
     private final LocationService locationService;
 
+    /**
+     * 장소 등록
+     */
     @PostMapping
-    public ResponseEntity<?> createLocation(@Valid @RequestBody LocationCreateRequest request) {
-        Location location = locationService.createLocation(request);
+    public ResponseEntity<LocationResponse> createLocation(@Valid @RequestBody LocationCreateRequest request) {
+        LocationResponse location = locationService.createLocation(request);
         return ResponseEntity.ok(location);
     }
 
-    // LocationController.java
+    /**
+     * 전체 장소 목록(Soft Delete 제외)
+     */
     @GetMapping
     public ResponseEntity<List<LocationResponse>> getAllLocations() {
         return ResponseEntity.ok(locationService.getAllLocations());
     }
 
+    /**
+     * 장소 논리 삭제(Soft Delete)
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteLocation(@PathVariable Long id) {
-        locationService.deleteLocation(id);
+        locationService.softDeleteLocation(id);
         return ResponseEntity.ok().build();
     }
-
 }
