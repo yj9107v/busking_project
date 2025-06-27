@@ -2,9 +2,9 @@ package busking.busking_project.review;
 
 import busking.busking_project.promotion.PromotionPost;
 import busking.busking_project.user.User;
+import busking.busking_project.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "review", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"promotion_post_id", "user_id"})
 })
-public class Review {
+public class Review extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,21 +41,4 @@ public class Review {
     @Column(nullable = false)
     private boolean isDeleted = false;
 
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @Column
-    private LocalDateTime updatedAt;
-
-    // 생성/수정 자동 관리
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
 }
