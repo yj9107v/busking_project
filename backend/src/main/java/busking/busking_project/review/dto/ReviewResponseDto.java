@@ -17,6 +17,7 @@ public class ReviewResponseDto {
     private Long id;              // 리뷰 PK
     private Long postId;          // 홍보글 PK (PromotionPost)
     private Long userId;          // 작성자(유저) PK
+    private String nickname;      // 작성자 닉네임 (프론트에 필요시)
     private String comment;       // 댓글 내용
     private int rating;           // 별점
     private boolean isDeleted;    // 삭제 여부
@@ -30,6 +31,7 @@ public class ReviewResponseDto {
         this.id = review.getId();
         this.postId = review.getPostId().getId(); // PromotionPost 객체 참조에서 PK 추출
         this.userId = review.getUserId().getId();          // User 객체 참조에서 PK 추출
+        this.nickname = review.getUserId().getNickname();  // 작성자 닉네임 추출(선택)
         this.comment = review.getComment();
         this.rating = review.getRating();
         this.isDeleted = review.isDeleted();

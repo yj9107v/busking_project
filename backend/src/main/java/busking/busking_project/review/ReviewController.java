@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,13 +42,14 @@ public class ReviewController {
 
     /**
      * 리뷰 삭제
-     * - 인증 정보(Authentication)에서 userId 추출하여, 본인/관리자만 삭제 가능하도록 위임
+     * - 인증 정보(Authentication)에서 userId, role을 추출하여 본인/관리자만 삭제 가능
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteReview(@PathVariable Long id, Authentication auth) {
         try {
             Long userId = extractUserId(auth);
-            reviewService.deleteReview(id, userId);
+            String role = extractUserRole(auth);
+            reviewService.deleteReview(id, userId, role);
             return ResponseEntity.ok("리뷰가 성공적으로 삭제되었습니다.");
         } catch (IllegalStateException e) {
             e.printStackTrace();
@@ -89,5 +89,21 @@ public class ReviewController {
         }
 
         throw new IllegalStateException("알 수 없는 인증 유형입니다.");
+    }
+
+    /**
+     * 인증(Authentication) 객체에서 실제 사용자 role(권한) 추출
+     * - OAuth2/로컬 모두 대응 ("ADMIN", "USER" 등 반환)
+     */
+    private String extractUserRole(Authentication auth) {
+        if (auth == null || !auth.isAuthenticated()) {
+            throw new IllegalStateException("로그인된 사용자가 아닙니다.");
+        }
+
+        // Spring Security의 권한 구조상 첫 번째 권한만 사용 (여러 개일 경우 첫 번째)
+        return auth.getAuthorities().stream()
+                .findFirst()
+                .map(grantedAuthority -> grantedAuthority.getAuthority().replace("ROLE_", "")) // "ROLE_ADMIN" → "ADMIN"
+                .orElse("USER");
     }
 }
