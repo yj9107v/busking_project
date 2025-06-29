@@ -16,6 +16,8 @@ repositories {
 	mavenCentral()
 }
 
+ext { lombokVersion = '1.18.32' }
+
 dependencies {
 	// Spring Boot 기본
 	implementation 'org.springframework.boot:spring-boot-starter'
@@ -35,10 +37,12 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
 	// Lombok
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-	testCompileOnly "org.projectlombok:lombok"
-	testAnnotationProcessor "org.projectlombok:lombok"
+	compileOnly          "org.projectlombok:lombok:${lombokVersion}"
+	annotationProcessor  "org.projectlombok:lombok:${lombokVersion}"
+
+	testCompileOnly          "org.projectlombok:lombok:${lombokVersion}"
+	testAnnotationProcessor  "org.projectlombok:lombok:${lombokVersion}"
+
 	runtimeOnly   'com.mysql:mysql-connector-j'   // 운영·개발용
 	// 테스트
 	testImplementation "org.springframework.security:spring-security-test"
