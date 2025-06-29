@@ -6,7 +6,7 @@
 
 ## 📸 0. 썸네일
 
-![alt text](docs/Image/image-2.png)
+![alt text](docs/Image/Thumbnail.png)
 
 ---
 
@@ -200,7 +200,7 @@
 
 ## 📑 7. API 명세서
 
-![alt text](docs/Image/image-1.png)
+![alt text](docs/Image/API.png)
 
 ---
 
