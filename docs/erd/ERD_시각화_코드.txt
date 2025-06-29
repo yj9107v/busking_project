@@ -3,28 +3,28 @@ Table User {
   username varchar(20) [unique]
   password varchar(255)
   nickname varchar(10) [unique]
-  email varcahr(100) [not null, unique]
+  email varchar(100) [not null, unique]
   provider varchar(20) [not null, default: 'local']
   social_id varchar(50)
-  role enum(USER, ADMIN) [not null, default: 'USER']
+  role enum('USER', 'ADMIN') [not null, default: 'USER']
   created_at datetime [not null]
   updated_at datetime
   is_deleted boolean [default: false]
   deleted_at datetime
 
-  note: 'unique(social_provider, social_id)'
+  note: '🔐 unique(provider, social_id)'
 }
 
 Table Busking {
   id bigint [pk]
   uuid char(36) [not null, unique]
-  user_id bigint [not null, ref: > User.id]
-  location_id bigint [not null, ref: > Location.id]
+  user_id bigint [not null]
+  location_id bigint [not null]
   date date
   start_time time
   end_time time
   description varchar(100)
-  status enum(SCHEDULED, ONGOING, COMPLETED) [not null]
+  status enum('SCHEDULED', 'ONGOING', 'COMPLETED') [not null]
   created_at datetime [not null]
   updated_at datetime
   is_deleted boolean [default: false]
@@ -43,8 +43,8 @@ Table Location {
 Table PromotionPost {
   id bigint [pk]
   uuid char(36) [not null, unique]
-  user_id bigint [not null, ref: > User.id]
-  location_id bigint [not null, ref: > Location.id]
+  user_id bigint [not null]
+  location_id bigint [not null]
   title varchar(100) [not null]
   content text [not null]
   media_url text
@@ -52,28 +52,26 @@ Table PromotionPost {
   created_at datetime [not null]
   updated_at datetime
   is_deleted boolean [default: false]
-  category enum(ART, DANCE, MUSIC, TALK) [not null]
+  category enum('ART', 'DANCE', 'MUSIC', 'TALK') [not null]
 }
 
 Table Review {
   id bigint [pk]
-  post_id bigint [not null, ref: > PromotionPost.id]
-  user_id bigint [not null, ref: > User.id]
+  post_id bigint [not null]
+  user_id bigint [not null]
   rating int // 1~5
   comment text
   created_at datetime [not null]
   updated_at datetime
   is_deleted boolean [default: false]
 
-  note: '💡 제약조건: UNIQUE(post_id, user_id) | 하나의 게시글에 한 유저당 리뷰 하나만 작성 가능.'
+  note: '💡 unique(post_id, user_id)'
 }
-
-
 
 Table BoardPost {
   id bigint [pk]
   uuid char(36) [not null, unique]
-  user_id bigint [not null, ref: > User.id]
+  user_id bigint [not null]
   title varchar(100) [not null]
   content text [not null]
   view_count int [default: 0]
@@ -84,20 +82,38 @@ Table BoardPost {
 
 Table Comment {
   id bigint [pk]
-  post_id bigint [not null, ref: > BoardPost.id]
-  user_id bigint [not null, ref: > User.id]
+  post_id bigint [not null]
+  user_id bigint [not null]
   content text [not null]
   created_at datetime [not null]
   updated_at datetime
   is_deleted boolean [default: false]
-  parent_id bigint [ref: > Comment.id]
+  parent_id bigint
 }
 
 Table PostView {
   id bigint [pk]
   post_id bigint [not null]
-  post_type enum(PROMOTION, BOARD) [not null]
+  post_type enum('PROMOTION', 'BOARD') [not null]
   user_id bigint [not null]
   viewed_at datetime [not null]
-  note: ' 제약조건: UNIQUE(post_id, post_type, user_id) | 동일 사용자는 한 게시글에 대해 단 1회만 조회 수가 증가한다.'
+
+  note: '💡 unique(post_id, post_type, user_id)'
 }
+
+Ref: Busking.user_id > User.id
+Ref: Busking.location_id > Location.id
+
+Ref: PromotionPost.user_id > User.id
+Ref: PromotionPost.location_id > Location.id
+
+Ref: Review.user_id > User.id
+Ref: Review.post_id > PromotionPost.id
+
+Ref: BoardPost.user_id > User.id
+
+Ref: Comment.user_id > User.id
+Ref: Comment.post_id > BoardPost.id
+Ref: Comment.parent_id > Comment.id
+
+Ref: PostView.user_id > User.id
