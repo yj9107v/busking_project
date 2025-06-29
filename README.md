@@ -6,7 +6,7 @@
 
 ## 📸 0. 썸네일
 
-![alt text](image-2.png)
+![alt text](docs/Image/image-2.png)
 
 ---
 
@@ -83,14 +83,124 @@
 
 ## 📁 6. 프로젝트 구조
 
-`[ 파일구조 이미지 (추후 삽입 예정) ]`
-
+```plaintext
+📦 backend/src
+├─main/
+│   ├─java/
+│   │   ├─busking/
+│   │   │   ├─busking_project/
+│   │   │   │   BuskingProjectApplication.java
+│   │   │   │   SecurityConfig.java
+│   │   │   │   WebConfig.java
+│   │   │   │   WebController.java
+│   │   │   │
+│   │   │   │   ├─Busking_Schedule/
+│   │   │   │   │   BuskingController.java
+│   │   │   │   │   BuskingRepository.java
+│   │   │   │   │   BuskingSchedule.java
+│   │   │   │   │   BuskingService.java
+│   │   │   │   │   BuskingStatus.java
+│   │   │   │   │
+│   │   │   │   │   ├─dto/
+│   │   │   │   │   │   BuskingCreateRequest.java
+│   │   │   │   │   │   BuskingResponse.java
+│   │   │   │   │   │   LocationWithScheduleDto.java
+│   │   │   │
+│   │   │   │   ├─base/
+│   │   │   │   │   BaseEntity.java
+│   │   │   │
+│   │   │   │   ├─board/
+│   │   │   │   │   BoardPost.java
+│   │   │   │   │   BoardPostController.java
+│   │   │   │   │   BoardPostRepository.java
+│   │   │   │   │   BoardPostService.java
+│   │   │   │   │
+│   │   │   │   │   ├─dto/
+│   │   │   │   │   │   BoardPostRequestDto.java
+│   │   │   │   │   │   BoardPostResponseDto.java
+│   │   │   │
+│   │   │   │   ├─comment/
+│   │   │   │   │   Comment.java
+│   │   │   │   │   CommentController.java
+│   │   │   │   │   CommentRepository.java
+│   │   │   │   │   CommentService.java
+│   │   │   │   │
+│   │   │   │   │   ├─dto/
+│   │   │   │   │   │   CommentRequestDto.java
+│   │   │   │   │   │   CommentResponseDto.java
+│   │   │   │
+│   │   │   │   ├─location/
+│   │   │   │   │   Location.java
+│   │   │   │   │   LocationController.java
+│   │   │   │   │   LocationRepository.java
+│   │   │   │   │   LocationService.java
+│   │   │   │   │
+│   │   │   │   │   ├─dto/
+│   │   │   │   │   │   LocationCreateRequest.java
+│   │   │   │   │   │   LocationResponse.java
+│   │   │   │
+│   │   │   │   ├─promotion/
+│   │   │   │   │   PromotionPost.java
+│   │   │   │   │   PromotionPostController.java
+│   │   │   │   │   PromotionPostRepository.java
+│   │   │   │   │   PromotionPostService.java
+│   │   │   │   │
+│   │   │   │   │   ├─dto/
+│   │   │   │   │   │   PromotionPostRequestDto.java
+│   │   │   │   │   │   PromotionPostResponseDto.java
+│   │   │   │
+│   │   │   │   ├─review/
+│   │   │   │   │   Review.java
+│   │   │   │   │   ReviewController.java
+│   │   │   │   │   ReviewRepository.java
+│   │   │   │   │   ReviewService.java
+│   │   │   │   │
+│   │   │   │   │   ├─dto/
+│   │   │   │   │   │   ReviewRequestDto.java
+│   │   │   │   │   │   ReviewResponseDto.java
+│   │   │   │
+│   │   │   │   ├─user/
+│   │   │   │   │   User.java
+│   │   │   │   │   UserController.java
+│   │   │   │   │   UserRepository.java
+│   │   │   │   │   UserService.java
+│   │   │   │   │
+│   │   │   │   │   ├─dto/
+│   │   │   │   │   │   RegisterRequestDto.java
+│   │   │   │   │   │   UserResponseDto.java
+│
+📦 frontend/src
+├─api/
+│   api.js
+│   auth.js
+│   busking.js
+│   board.js
+│   comment.js
+│   promotion.js
+│   review.js
+│   user.js
+├─components/
+│   Header.jsx
+│   Footer.jsx
+│   Map.jsx
+│   BuskingCard.jsx
+│   ...
+├─pages/
+│   HomePage.jsx
+│   LoginPage.jsx
+│   RegisterPage.jsx
+│   BuskingListPage.jsx
+│   PromotionListPage.jsx
+│   BoardPage.jsx
+│   ...
+├─App.jsx
+├─main.jsx
 
 ---
 
 ## 📑 7. API 명세서
 
-![![alt text](image-1.png)](image.png)
+![alt text](docs/Image/image-1.png)
 
 ---
 
