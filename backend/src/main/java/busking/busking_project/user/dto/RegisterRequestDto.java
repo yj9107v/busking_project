@@ -1,15 +1,13 @@
 package busking.busking_project.user.dto;
 
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class RegisterRequestDto {
     // 회원가입 시 클라이언트에서 전달되는 데이터를 받기 위한 DTO
     // 입력값에 대해 @Valid 유효성 검사 적용
@@ -44,4 +42,6 @@ public class RegisterRequestDto {
     // - 필수 입력
     // - 한글, 영문, 숫자만 허용
     // - 2~30자 제한
+
+    @Builder.Default private boolean social = false;
 }

@@ -47,6 +47,7 @@ public class User {
 
     @Builder.Default
     @Column(nullable = false)
+    @Builder.Default
     private boolean isDeleted = false; // 계정 삭제 여부 (기본값 false)
 
     private LocalDateTime deletedAt; // 삭제된 경우 시간 기록

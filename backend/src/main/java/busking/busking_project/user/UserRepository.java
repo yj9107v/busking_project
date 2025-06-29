@@ -23,4 +23,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // 계정이 삭제된 사용자 중 삭제 시간(deletedAt)이 특정 시간 이전인 사용자들을 완전 삭제
     // 주로 스케줄러에서 주기적으로 호출하여 DB 정리
     int deleteByIsDeletedTrueAndDeletedAtBefore(LocalDateTime time);
+
 }
