@@ -89,13 +89,13 @@ jobs:
 
       - name: 📤 S3 업로드 및 EB 배포
         run: |
-          aws s3 cp deploy.zip s3://YOUR_BUCKET_NAME/deploy.zip
+          aws s3 cp deploy.zip s3://elasticbeanstalk-ap-northeast-2-201948236914/deploy.zip
 
           aws elasticbeanstalk create-application-version \
-            --application-name YOUR_APP_NAME \
+            --application-name busking-dev \
             --version-label "ver-${{ github.run_id }}" \
-            --source-bundle S3Bucket=YOUR_BUCKET_NAME,S3Key=deploy.zip
+            --source-bundle S3Bucket=elasticbeanstalk-ap-northeast-2-201948236914,S3Key=deploy.zip
 
           aws elasticbeanstalk update-environment \
-            --environment-name YOUR_ENV_NAME \
+            --environment-name busking-dev-env \
             --version-label "ver-${{ github.run_id }}"
