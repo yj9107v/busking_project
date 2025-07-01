@@ -15,7 +15,7 @@ function LoginForm({ onLogin }) {
 
     try {
       // 📨 로그인 API 요청 보내기
-      const res = await fetch("http://localhost:8080/api/users/login", {
+      const res = await fetch("http://localhost:8080/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include", // 세션 쿠키 포함
