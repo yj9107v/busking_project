@@ -44,7 +44,11 @@ public class PromotionPostService {
                 .isDeleted(false)
                 .build();
 
-        return new PromotionPostResponse(promotionPostRepository.save(post));
+        PromotionPost saved = promotionPostRepository.save(post);
+
+        System.out.println("✅ 생성된 ID = " + saved.getId()); // 디버깅 로그
+
+        return new PromotionPostResponse(saved);
     }
 
     @Transactional
@@ -71,7 +75,7 @@ public class PromotionPostService {
     @Transactional
     public void deletePromotionPost(Long id) {
         PromotionPost post = promotionPostRepository.findByIdAndIsDeletedFalse(id)
-                .orElseThrow(() -> new NoSuchElementException("삭제할 게시글이 없습니다."));
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 게시글입니다."));
         post.setIsDeleted(true);
         promotionPostRepository.save(post);
     }
