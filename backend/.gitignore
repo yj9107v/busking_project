@@ -4,10 +4,8 @@
 # .gradle
 .gradle/
 
-# build 디렉토리는 무시하되 .jar 파일은 포함
+# build
 **/build/
-!**/build/libs/
-!**/build/libs/*.jar
 
 # iml 확장자 파일
 *.iml
