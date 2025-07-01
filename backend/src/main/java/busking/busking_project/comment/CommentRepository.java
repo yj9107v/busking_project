@@ -1,3 +1,5 @@
+package busking.busking_project.comment;
+
 import busking.busking_project.board.BoardPost;
 import busking.busking_project.comment.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
