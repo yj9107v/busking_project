@@ -48,6 +48,14 @@ dependencies {
 	testImplementation "org.springframework.security:spring-security-test"
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+	testImplementation 'org.mockito:mockito-junit-jupiter:5.2.0'
+	testImplementation("org.assertj:assertj-core:3.25.3")
+	testImplementation 'org.mockito:mockito-inline:5.2.0'       // 🔹 final 클래스 모킹용
+
+	testImplementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+
+	testImplementation 'org.springframework.security:spring-security-test'       // 다음 단계(@WithMockUser)에 필요
+
 	// ✅ CI / 단위테스트 전용 H2
 	testRuntimeOnly 'com.h2database:h2'
 
