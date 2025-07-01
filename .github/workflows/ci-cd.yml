@@ -85,7 +85,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          region: ap-northeast-2
+          aws-region: ap-northeast-2
 
       - name: 📤 S3 업로드 및 EB 배포
         run: |
