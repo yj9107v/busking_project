@@ -1,21 +1,30 @@
 # 📌 API 명세서
 
+![API.png](../Image/API.png)
+
 ### 🔍 API 종류
 
-#### ✅ 1. `users_api` → 회원과 관련된 모든 `API`
-- [로컬 회원가입](users_api/로컬_회원가입_API.md)
+#### ✅ 1. `User` → 회원과 관련된 모든 `API`
+- 회원가입 - `/api/users`
+- 로그인 - `/api/auth/login`
+- 카카오, 구글 로그인 - `/api/auth/oatuh`
+- 회원 정보 조회 - `/api/users/me`
+- 닉네임 수정 - `/api/users/me/nickname`
+- 비밀번호 변경 - `/api/users/me/password`
+- 회원탈퇴 - `api/users/me`
 
 ---
 
-#### ✅ 2. `posts_api` → 게시글과 관련된 모든 `API`
+#### ✅ 2. `PromotionPost` → 게시글과 관련된 모든 `API`
+- 게시글 작성 - `/api/promotions`
+- 게시글 수정 - `/api/promotions/{id}`
+- 게시글 삭제 - `/api/promotions/{id}`
 
 ---
 
-#### ✅ 3. `reviews_api` → 리뷰와 관련된 모든 `API`
-
----
-
-#### ✅ 4. `auth_api` → 토큰 재발급과 로그아웃 등 인증 전용 `API`
-- [로컬 로그인](auth_api/로컬_로그인_API.md)
+#### ✅ 3. `Review` → 리뷰와 관련된 모든 `API`
+- 리뷰 작성 - `/api/promotions/{id}/reviewsRequestSyntax`
+- 리뷰 수정 - `/api/promotions/{id}/reviews/{reviewId}`
+- 리뷰 삭제 - `/api/promotions/{id}/reviews/{reviewId}`
 
 ---

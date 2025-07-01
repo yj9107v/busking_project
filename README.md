@@ -84,117 +84,134 @@
 ## 📁 6. 프로젝트 구조
 
 ```plaintext
-📦 backend/src
-├─main/
-│   ├─java/
-│   │   ├─busking/
-│   │   │   ├─busking_project/
-│   │   │   │   BuskingProjectApplication.java
-│   │   │   │   SecurityConfig.java
-│   │   │   │   WebConfig.java
-│   │   │   │   WebController.java
-│   │   │   │
-│   │   │   │   ├─Busking_Schedule/
-│   │   │   │   │   BuskingController.java
-│   │   │   │   │   BuskingRepository.java
-│   │   │   │   │   BuskingSchedule.java
-│   │   │   │   │   BuskingService.java
-│   │   │   │   │   BuskingStatus.java
-│   │   │   │   │
-│   │   │   │   │   ├─dto/
-│   │   │   │   │   │   BuskingCreateRequest.java
-│   │   │   │   │   │   BuskingResponse.java
-│   │   │   │   │   │   LocationWithScheduleDto.java
-│   │   │   │
-│   │   │   │   ├─base/
-│   │   │   │   │   BaseEntity.java
-│   │   │   │
-│   │   │   │   ├─board/
-│   │   │   │   │   BoardPost.java
-│   │   │   │   │   BoardPostController.java
-│   │   │   │   │   BoardPostRepository.java
-│   │   │   │   │   BoardPostService.java
-│   │   │   │   │
-│   │   │   │   │   ├─dto/
-│   │   │   │   │   │   BoardPostRequestDto.java
-│   │   │   │   │   │   BoardPostResponseDto.java
-│   │   │   │
-│   │   │   │   ├─comment/
-│   │   │   │   │   Comment.java
-│   │   │   │   │   CommentController.java
-│   │   │   │   │   CommentRepository.java
-│   │   │   │   │   CommentService.java
-│   │   │   │   │
-│   │   │   │   │   ├─dto/
-│   │   │   │   │   │   CommentRequestDto.java
-│   │   │   │   │   │   CommentResponseDto.java
-│   │   │   │
-│   │   │   │   ├─location/
-│   │   │   │   │   Location.java
-│   │   │   │   │   LocationController.java
-│   │   │   │   │   LocationRepository.java
-│   │   │   │   │   LocationService.java
-│   │   │   │   │
-│   │   │   │   │   ├─dto/
-│   │   │   │   │   │   LocationCreateRequest.java
-│   │   │   │   │   │   LocationResponse.java
-│   │   │   │
-│   │   │   │   ├─promotion/
-│   │   │   │   │   PromotionPost.java
-│   │   │   │   │   PromotionPostController.java
-│   │   │   │   │   PromotionPostRepository.java
-│   │   │   │   │   PromotionPostService.java
-│   │   │   │   │
-│   │   │   │   │   ├─dto/
-│   │   │   │   │   │   PromotionPostRequestDto.java
-│   │   │   │   │   │   PromotionPostResponseDto.java
-│   │   │   │
-│   │   │   │   ├─review/
-│   │   │   │   │   Review.java
-│   │   │   │   │   ReviewController.java
-│   │   │   │   │   ReviewRepository.java
-│   │   │   │   │   ReviewService.java
-│   │   │   │   │
-│   │   │   │   │   ├─dto/
-│   │   │   │   │   │   ReviewRequestDto.java
-│   │   │   │   │   │   ReviewResponseDto.java
-│   │   │   │
-│   │   │   │   ├─user/
-│   │   │   │   │   User.java
-│   │   │   │   │   UserController.java
-│   │   │   │   │   UserRepository.java
-│   │   │   │   │   UserService.java
-│   │   │   │   │
-│   │   │   │   │   ├─dto/
-│   │   │   │   │   │   RegisterRequestDto.java
-│   │   │   │   │   │   UserResponseDto.java
+📦 backend/
+├─src/
 │
-📦 frontend/src
-├─api/
-│   api.js
-│   auth.js
-│   busking.js
-│   board.js
-│   comment.js
-│   promotion.js
-│   review.js
-│   user.js
-├─components/
-│   Header.jsx
-│   Footer.jsx
-│   Map.jsx
-│   BuskingCard.jsx
-│   ...
-├─pages/
-│   HomePage.jsx
-│   LoginPage.jsx
-│   RegisterPage.jsx
-│   BuskingListPage.jsx
-│   PromotionListPage.jsx
-│   BoardPage.jsx
-│   ...
-├─App.jsx
-├─main.jsx
+├── main/
+│   └── java/
+│       └── busking/
+│           └── busking_project/
+│               ├── BuskingProjectApplication.java
+│               ├── SecurityConfig.java
+│               ├── WebConfig.java
+│               ├── WebController.java
+│
+│               ├── Busking_Schedule/
+│               │   ├── BuskingController.java
+│               │   ├── BuskingRepository.java
+│               │   ├── BuskingSchedule.java
+│               │   ├── BuskingService.java
+│               │   ├── BuskingStatus.java
+│               │   └── dto/
+│               │       ├── BuskingCreateRequest.java
+│               │       ├── BuskingResponse.java
+│               │       └── LocationWithScheduleDto.java
+│
+│               ├── base/
+│               │   └── BaseEntity.java
+│
+│               ├── board/
+│               │   ├── BoardPost.java
+│               │   ├── BoardPostController.java
+│               │   ├── BoardPostRepository.java
+│               │   ├── BoardPostService.java
+│               │   └── dto/
+│               │       ├── BoardPostRequestDto.java
+│               │       └── BoardPostResponseDto.java
+│
+│               ├── comment/
+│               │   ├── Comment.java
+│               │   ├── CommentController.java
+│               │   ├── CommentRepository.java
+│               │   ├── CommentService.java
+│               │   └── dto/
+│               │       ├── CommentRequestDto.java
+│               │       └── CommentResponseDto.java
+│
+│               ├── location/
+│               │   ├── Location.java
+│               │   ├── LocationController.java
+│               │   ├── LocationRepository.java
+│               │   ├── LocationService.java
+│               │   └── dto/
+│               │       ├── LocationCreateRequest.java
+│               │       └── LocationResponse.java
+│
+│               ├── promotion/
+│               │   ├── PromotionPost.java
+│               │   ├── PromotionPostController.java
+│               │   ├── PromotionPostRepository.java
+│               │   ├── PromotionPostService.java
+│               │   └── dto/
+│               │       ├── PromotionPostRequestDto.java
+│               │       └── PromotionPostResponseDto.java
+│
+│               ├── review/
+│               │   ├── Review.java
+│               │   ├── ReviewController.java
+│               │   ├── ReviewRepository.java
+│               │   ├── ReviewService.java
+│               │   └── dto/
+│               │       ├── ReviewRequestDto.java
+│               │       └── ReviewResponseDto.java
+│
+│               └── user/
+│                   ├── User.java
+│                   ├── UserController.java
+│                   ├── UserRepository.java
+│                   ├── UserService.java
+│                   └── dto/
+│                       ├── RegisterRequestDto.java
+│                       └── UserResponseDto.java
+│
+├── test/
+│   └── java/
+│       └── busking/
+│           └── busking_project/
+│               ├── promotion/
+│               │   └── PromotionPostControllerTest.java
+│               ├── review/
+│               │   └── ReviewControllerTest.java
+│               └── user/
+│                   └── AuthControllerTest.java
+│
+📦 frontend/src/
+├── api/
+│   ├── api.js
+│   ├── auth.js
+│   ├── busking.js
+│   ├── board.js
+│   ├── comment.js
+│   ├── promotion.js
+│   ├── review.js
+│   └── user.js
+│
+├── components/
+│   ├── Header.jsx
+│   ├── Footer.jsx
+│   ├── Map.jsx
+│   ├── BuskingCard.jsx
+│   └── ...
+│
+├── pages/
+│   ├── HomePage.jsx
+│   ├── LoginPage.jsx
+│   ├── LoginFailedPage.jsx
+│   ├── RegisterPage.jsx
+│   ├── BuskingListPage.jsx
+│   ├── BuskingCreatePage.jsx
+│   ├── BuskingDetailPage.jsx
+│   ├── PromotionListPage.jsx
+│   ├── PromotionPage.jsx
+│   ├── PromotionEditPage.jsx
+│   ├── BoardPage.jsx
+│   ├── BoardPostPage.jsx
+│   ├── BoardEditPage.jsx
+│   ├── MyPage.jsx
+│   └── ...
+│
+├── App.jsx
+├── main.jsx
 ```
 ---
 
@@ -208,8 +225,9 @@
 
 ### 🔐 사용자 인증
 - 일반 로그인 / 회원가입 (JWT)
-- 사용자 정보 조회
-- 로그아웃 및 탈퇴
+- 소셜 로그인 (구글, 카카오 OAuth2)
+- 사용자 정보 조회 / 닉네임 수정
+- 로그아웃 및 탈퇴 (소프트 삭제 및 복구 기능 포함)
 
 ### 🗓 버스킹 일정 관리
 - 공연 일정 등록 / 조회 / 삭제
@@ -235,7 +253,7 @@
 
 ## 🧭 9. ERD
 
-📄 [ERD 구조 보기 (PDF)](docs/erd/Busking_Project_ERD.pdf)  
+📄 [ERD 구조 보기 (PDF)](docs/erd)  
 또는 아래 이미지 참조 👇
 
 ![ERD 다이어그램](docs/Image/Busking_Project_ERD.png)
@@ -243,14 +261,22 @@
 
 ---
 
-## 📌 10. 프로젝트 후기
+## 🚀 10. 배포 및 CI/CD
+- GitHub Actions 기반 CI/CD 구축
+  - develop 브랜치에서 CI 실행
+  - main 브랜치 merge 시 AWS EB 자동 배포
+- 테스트 환경에서는 H2 DB, 운영 환경에서는 RDS(MySQL) 사용
+
+---
+
+## 📌 11. 프로젝트 후기
 
 ### 🙊 신동진
 - **역할:** 로그인/회원가입 구현
 - **후기:** `작성 예정`
 
 ### 🍇 최용준
-- **역할:** ERD 설계, 기능 구조화, API 문서 작성
+- **역할:** ERD 설계, 기능 구조화, API 문서 작성, User 테스트코드 작성
 - **후기:** `작성 예정`
 
 ### 🐶 유승범
