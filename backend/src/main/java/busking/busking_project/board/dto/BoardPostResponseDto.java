@@ -13,6 +13,8 @@ public class BoardPostResponseDto {
     private final Integer viewCount;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
+    private final Long userId;           // 작성자 ID
+    private final String nickname;       // 작성자 닉네임
 
     public BoardPostResponseDto(BoardPost entity) {
         this.id = entity.getId();
@@ -21,5 +23,7 @@ public class BoardPostResponseDto {
         this.viewCount = entity.getViewCount();
         this.createdAt = entity.getCreatedAt();
         this.updatedAt = entity.getUpdatedAt();
+        this.userId = entity.getUser().getId();
+        this.nickname = entity.getUser().getNickname();
     }
 }
