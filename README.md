@@ -44,8 +44,8 @@
 | 멤버 | 역할 | GitHub / Email |
 |------|------|----------------|
 | 신동진 | 🔐 로그인 / 회원가입 기능, 👤 회원 관련 기능 구현 | `tlsehdwls201@naver.com` |
-| 최용준 | 📐 ERD 설계, 📚 기능 구조화, 📄 API 명세서 작성, 🧪 User 테스트코드 작성 | `yj9107vv@gmail.com` |
-| 유승범 | 📝 게시판 구현 및 🗺️ 카카오맵 연동, 📄 API 명세서 작성, 🧪 PromotionPost 테스트코드 작성 | `ysb7021@naver.com` |
+| 최용준 | 📐 ERD 설계, 📚 기능 구조화, 📄 API 명세서 작성, 🧪 User 테스트코드 작성, 🌐 서버 배포 및 AWS DB 연결 | `yj9107vv@gmail.com` |
+| 유승범 | 📝 게시판 구현 및 🗺️ 카카오맵 연동, 📄 API 명세서 작성, 🧪 PromotionPost 테스트코드 작성, CI/CD 파이프라인 구축 | `ysb7021@naver.com` |
 
 ---
 
